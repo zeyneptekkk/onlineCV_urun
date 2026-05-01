@@ -1,0 +1,71 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ baslik }}{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>{{ baslik }}</h1>
+  <a href="{{ url_for('admin_videolar') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>Geri
+  </a>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label">Başlık *</label>
+        <input type="text" name="baslik" class="form-control" required
+               value="{{ video.baslik if video else '' }}"
+               placeholder="Mülakat başlığı">
+      </div>
+      <div class="col-12">
+        <label class="form-label">YouTube Linki</label>
+        <input type="url" name="youtube_link" class="form-control"
+               value="{{ video.youtube_link if video else '' }}"
+               placeholder="https://www.youtube.com/watch?v=...">
+        <div class="form-text">YouTube videosunun tam linkini yapıştırın. Otomatik gömülü oynatır.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Şirket / Kurum</label>
+        <input type="text" name="sirket" class="form-control"
+               value="{{ video.sirket if video else '' }}"
+               placeholder="Şirket adı (opsiyonel)">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Tarih</label>
+        <input type="text" name="tarih" class="form-control"
+               value="{{ video.tarih if video else '' }}"
+               placeholder="Mart 2024">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sıra (küçük = önce)</label>
+        <input type="number" name="sira" class="form-control" min="0"
+               value="{{ video.sira if video else 0 }}">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Şirket Logosu</label>
+        {% if video and video.sirket_logo %}
+        <div class="mb-2">
+          <img src="{{ url_for('static', filename='uploads/' + video.sirket_logo) }}"
+               alt="Logo" style="height:48px; border-radius:8px; border:1px solid var(--border); background:white; padding:4px;">
+        </div>
+        {% endif %}
+        <input type="file" name="sirket_logo" class="form-control" accept="image/*">
+        <div class="form-text">Şirketin logosunu PNG/JPG olarak yükleyin. Karanlık arka planda görünecek.</div>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Açıklama</label>
+        <textarea name="aciklama" class="form-control" rows="3"
+                  placeholder="Video hakkında kısa not...">{{ video.aciklama if video else '' }}</textarea>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-lg me-1"></i>Kaydet
+      </button>
+      <a href="{{ url_for('admin_videolar') }}" class="btn btn-outline-secondary">İptal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

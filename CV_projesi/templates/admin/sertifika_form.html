@@ -1,0 +1,92 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ baslik }}{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>{{ baslik }}</h1>
+  <a href="{{ url_for('admin_sertifikalar') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>Geri
+  </a>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label">Başlık *</label>
+        <input type="text" name="baslik" class="form-control" required
+               value="{{ sertifika.baslik if sertifika else '' }}"
+               placeholder="Sertifika veya etkinlik adı">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Kurum / Organizasyon</label>
+        <input type="text" name="kurum" class="form-control"
+               value="{{ sertifika.kurum if sertifika else '' }}"
+               placeholder="Udemy, Google, Teknofest...">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Tarih</label>
+        <input type="text" name="tarih" class="form-control"
+               value="{{ sertifika.tarih if sertifika else '' }}"
+               placeholder="Ocak 2024">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Kategori *</label>
+        <select name="kategori" class="form-select">
+          <option value="sertifika" {% if sertifika and sertifika.kategori == 'sertifika' %}selected{% endif %}>Sertifika</option>
+          <option value="bootcamp" {% if sertifika and sertifika.kategori == 'bootcamp' %}selected{% endif %}>Bootcamp</option>
+          <option value="etkinlik" {% if sertifika and sertifika.kategori == 'etkinlik' %}selected{% endif %}>Etkinlik</option>
+          <option value="yarısma" {% if sertifika and sertifika.kategori == 'yarısma' %}selected{% endif %}>Yarışma</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sıra (küçük = önce)</label>
+        <input type="number" name="sira" class="form-control" min="0"
+               value="{{ sertifika.sira if sertifika else 0 }}">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Açıklama</label>
+        <textarea name="aciklama" class="form-control" rows="3"
+                  placeholder="Kısa açıklama...">{{ sertifika.aciklama if sertifika else '' }}</textarea>
+      </div>
+
+      <!-- MEVCUT FOTOĞRAFLAR -->
+      {% if sertifika and sertifika.fotograflar %}
+      <div class="col-12">
+        <label class="form-label">Mevcut Fotoğraflar</label>
+        <div class="d-flex flex-wrap gap-2">
+          {% for foto in sertifika.fotograflar %}
+          <div style="position:relative;">
+            <img src="{{ url_for('static', filename='uploads/' + foto.dosya) }}"
+                 style="width:100px;height:100px;object-fit:cover;border-radius:10px;border:1px solid var(--border);">
+            <form method="POST" action="{{ url_for('admin_sertifika_foto_sil', id=foto.id) }}"
+                  style="position:absolute;top:4px;right:4px;"
+                  onsubmit="return confirm('Bu fotoğrafı sil?')">
+              <button type="submit" class="btn btn-sm btn-danger"
+                      style="padding:2px 6px;font-size:.7rem;border-radius:6px;">
+                <i class="bi bi-x"></i>
+              </button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- YENİ FOTOĞRAF EKLE -->
+      <div class="col-12">
+        <label class="form-label">Fotoğraf Ekle</label>
+        <input type="file" name="fotograflar" class="form-control" accept="image/*" multiple>
+        <div class="form-text">PNG, JPG formatında. Birden fazla seçmek için Ctrl+tıkla.</div>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-lg me-1"></i>Kaydet
+      </button>
+      <a href="{{ url_for('admin_sertifikalar') }}" class="btn btn-outline-secondary">İptal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Sertifikalar{% endblock %}
+
+{% block content %}
+<div class="section-header">
+  <div class="container">
+    <h1 class="section-title"><i class="bi bi-award me-2 text-primary"></i>Sertifikalar</h1>
+    <p class="section-subtitle">Eğitimlerim, etkinliklerim ve başarılarım</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  <div class="row g-4">
+    <div class="col-sm-6 col-lg-3">
+      <a href="{{ url_for('sertifikalar_listesi') }}" class="cert-category-card">
+        <span class="icon">🏅</span>
+        <strong>Sertifikalar</strong>
+        <div class="text-muted small mt-1">Kurs ve program sertifikalarım</div>
+      </a>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <a href="{{ url_for('bootcamplar') }}" class="cert-category-card">
+        <span class="icon">🎓</span>
+        <strong>Bootcamplar</strong>
+        <div class="text-muted small mt-1">Tamamladığım bootcamp programları</div>
+      </a>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <a href="{{ url_for('etkinlikler') }}" class="cert-category-card">
+        <span class="icon">📅</span>
+        <strong>Etkinlikler</strong>
+        <div class="text-muted small mt-1">Katıldığım konferans ve seminerler</div>
+      </a>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <a href="{{ url_for('yarismalar') }}" class="cert-category-card">
+        <span class="icon">🏆</span>
+        <strong>Yarışmalar</strong>
+        <div class="text-muted small mt-1">Katıldığım hackathon ve yarışmalar</div>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

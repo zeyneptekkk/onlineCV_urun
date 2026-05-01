@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Referanslar{% endblock %}
+
+{% block content %}
+<div class="section-header">
+  <div class="container">
+    <h1 class="section-title">
+      <i class="bi bi-people me-2 text-primary"></i>Referanslar
+    </h1>
+    <p class="section-subtitle">Birlikte çalıştığım ve beni tanıyan değerli kişiler</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  {% if referanslar %}
+  <div class="row g-4 justify-content-center">
+    {% for ref in referanslar %}
+    <div class="col-sm-6 col-lg-4 col-xl-3">
+      <div class="ref-card">
+
+        <!-- BAŞLIK — PROFİL FOTOĞRAFI + ŞİRKET LOGOSU ARKAPLAN -->
+        <div class="ref-card-header">
+
+          <!-- Şirket logosu arka planda -->
+          {% if ref.sirket_logo %}
+          <div class="ref-company-bg">
+            <img src="{{ url_for('static', filename='uploads/' + ref.sirket_logo) }}"
+                 alt="{{ ref.sirket }}" class="ref-company-bg-img">
+          </div>
+          {% endif %}
+
+          <!-- Profil fotoğrafı veya baş harf -->
+          {% if ref.profil_foto %}
+          <img src="{{ url_for('static', filename='uploads/' + ref.profil_foto) }}"
+               alt="{{ ref.ad_soyad }}" class="ref-photo">
+          {% else %}
+          <div class="ref-avatar">{{ ref.ad_soyad[0] | upper }}</div>
+          {% endif %}
+        </div>
+
+        <!-- İÇERİK -->
+        <div class="ref-card-body">
+          <h5 class="ref-name">{{ ref.ad_soyad }}</h5>
+
+          {% if ref.pozisyon %}
+          <div class="ref-position">{{ ref.pozisyon }}</div>
+          {% endif %}
+
+          {% if ref.sirket %}
+          <div class="ref-company">
+            <i class="bi bi-building"></i>{{ ref.sirket }}
+          </div>
+          {% endif %}
+
+          {% if ref.iliski %}
+          <div class="mb-2">
+            <span class="tech-badge">{{ ref.iliski }}</span>
+          </div>
+          {% endif %}
+
+          {% if ref.aciklama %}
+          <p class="ref-desc">{{ ref.aciklama }}</p>
+          {% endif %}
+
+          <!-- İLETİŞİM -->
+          <div class="mt-auto d-flex flex-column gap-2">
+            {% if ref.linkedin %}
+            <a href="{{ ref.linkedin }}" target="_blank" class="linkedin-btn">
+              <i class="bi bi-linkedin"></i>LinkedIn Profili
+            </a>
+            {% endif %}
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+              {% if ref.telefon %}
+              <a href="tel:{{ ref.telefon }}" class="contact-badge" style="font-size:.78rem;">
+                <i class="bi bi-telephone"></i>{{ ref.telefon }}
+              </a>
+              {% endif %}
+              {% if ref.email %}
+              <a href="mailto:{{ ref.email }}" class="contact-badge" style="font-size:.78rem;">
+                <i class="bi bi-envelope"></i>{{ ref.email }}
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <i class="bi bi-people text-muted" style="font-size:3.5rem; opacity:.4;"></i>
+    <p class="text-muted mt-3 mb-0 fw-500">Henüz referans eklenmemiş.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

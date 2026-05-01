@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Yetenekler{% endblock %}
+
+{% block content %}
+<div class="section-header">
+  <div class="container">
+    <h1 class="section-title">
+      <i class="bi bi-stars me-2 text-primary"></i>Yetenekler
+    </h1>
+    <p class="section-subtitle">Bildiğim diller, teknolojiler ve araçlar</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  {% if kategoriler %}
+  {% for kategori, yetenekler in kategoriler.items() %}
+  <div class="skill-group mb-4">
+    <h5 class="skill-group-title">
+      <i class="bi bi-chevron-right me-1 text-primary"></i>{{ kategori }}
+    </h5>
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      {% for y in yetenekler %}
+      <div class="skill-chip">
+        <span class="skill-name">{{ y.isim }}</span>
+        {% if y.seviye %}
+        <span class="skill-level-dot skill-{{ y.seviye | lower | replace('ı','i') | replace('ö','o') | replace('ü','u') }}">{{ y.seviye }}</span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% if not loop.last %}<hr class="my-3" style="border-color:var(--border);">{% endif %}
+  {% endfor %}
+  {% else %}
+  <div class="text-center py-5">
+    <i class="bi bi-stars text-muted" style="font-size:3.5rem;opacity:.4;"></i>
+    <p class="text-muted mt-3 mb-0">Henüz yetenek eklenmemiş.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

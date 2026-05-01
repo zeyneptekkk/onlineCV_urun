@@ -1,0 +1,62 @@
+{% extends "admin/base.html" %}
+{% block title %}Yetenekler{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>Yetenekler</h1>
+  <a href="{{ url_for('admin_yetenek_ekle') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Yeni Yetenek
+  </a>
+</div>
+
+<div class="admin-table">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th style="width:36px;"></th>
+        <th>İsim</th>
+        <th>Kategori</th>
+        <th>Seviye</th>
+        <th style="width:130px;">İşlem</th>
+      </tr>
+    </thead>
+    <tbody id="sortable-tbody">
+      {% for y in yetenekler %}
+      <tr data-id="{{ y.id }}">
+        <td><i class="bi bi-grip-vertical drag-handle text-muted" style="cursor:grab;font-size:1.1rem;"></i></td>
+        <td class="fw-500">{{ y.isim }}</td>
+        <td class="text-muted small">{{ y.kategori or '—' }}</td>
+        <td>
+          {% if y.seviye %}
+          <span class="tech-badge">{{ y.seviye }}</span>
+          {% else %}—{% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('admin_yetenek_duzenle', id=y.id) }}"
+             class="btn btn-sm btn-outline-secondary me-1">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <form method="POST" action="{{ url_for('admin_yetenek_sil', id=y.id) }}"
+                style="display:inline;"
+                onsubmit="return confirm('Bu yeteneği silmek istediğine emin misin?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" class="text-center text-muted py-4">
+          Henüz yetenek yok. <a href="{{ url_for('admin_yetenek_ekle') }}">İlkini ekle</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>initSortable('sortable-tbody', 'yetenek');</script>
+{% endblock %}

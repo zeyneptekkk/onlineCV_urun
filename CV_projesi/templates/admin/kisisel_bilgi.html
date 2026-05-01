@@ -1,0 +1,83 @@
+{% extends "admin/base.html" %}
+{% block title %}Kişisel Bilgi{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>Kişisel Bilgi</h1>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Ad Soyad</label>
+        <input type="text" name="ad_soyad" class="form-control" value="{{ bilgi.ad_soyad or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Unvan / Meslek</label>
+        <input type="text" name="unvan" class="form-control" placeholder="Yazılım Geliştirici" value="{{ bilgi.unvan or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">E-posta</label>
+        <input type="email" name="email" class="form-control" value="{{ bilgi.email or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Telefon</label>
+        <input type="text" name="telefon" class="form-control" value="{{ bilgi.telefon or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Şehir</label>
+        <input type="text" name="sehir" class="form-control" value="{{ bilgi.sehir or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">LinkedIn</label>
+        <input type="url" name="linkedin" class="form-control" placeholder="https://linkedin.com/in/..." value="{{ bilgi.linkedin or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">GitHub</label>
+        <input type="url" name="github" class="form-control" placeholder="https://github.com/..." value="{{ bilgi.github or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">LeetCode</label>
+        <input type="url" name="leetcode" class="form-control" placeholder="https://leetcode.com/u/..." value="{{ bilgi.leetcode or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Website</label>
+        <input type="url" name="website" class="form-control" placeholder="https://..." value="{{ bilgi.website or '' }}">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Hakkımda / Özet</label>
+        <textarea name="ozet" class="form-control" rows="5" placeholder="Kendini kısaca anlat...">{{ bilgi.ozet or '' }}</textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Profil Fotoğrafı</label>
+        {% if bilgi.profil_foto %}
+        <div class="mb-2">
+          <img src="{{ url_for('static', filename='uploads/' + bilgi.profil_foto) }}"
+               alt="Profil" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid var(--border);">
+        </div>
+        {% endif %}
+        <input type="file" name="profil_foto" class="form-control" accept="image/*">
+        <div class="form-text">PNG, JPG, WEBP formatları desteklenir.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">CV Dosyası (PDF)</label>
+        {% if bilgi.cv_dosya %}
+        <div class="mb-2">
+          <a href="{{ url_for('static', filename='uploads/' + bilgi.cv_dosya) }}" target="_blank"
+             class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-file-earmark-pdf me-1"></i>Mevcut CV'yi Gör
+          </a>
+        </div>
+        {% endif %}
+        <input type="file" name="cv_dosya" class="form-control" accept=".pdf">
+        <div class="form-text">PDF formatında CV yükleyin.</div>
+      </div>
+    </div>
+    <hr class="my-4">
+    <button type="submit" class="btn btn-primary">
+      <i class="bi bi-check-lg me-1"></i>Kaydet
+    </button>
+  </form>
+</div>
+{% endblock %}

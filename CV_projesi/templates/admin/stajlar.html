@@ -1,0 +1,80 @@
+{% extends "admin/base.html" %}
+{% block title %}Stajlar{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>Staj Tecrübeleri</h1>
+  <a href="{{ url_for('admin_staj_ekle') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Yeni Staj
+  </a>
+</div>
+
+<div class="admin-table">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th style="width:36px;"></th>
+        <th>Şirket</th>
+        <th>Alan</th>
+        <th>Tarih</th>
+        <th>Ekip</th>
+        <th style="width:160px;">İşlem</th>
+      </tr>
+    </thead>
+    <tbody id="sortable-tbody">
+      {% for s in stajlar %}
+      <tr data-id="{{ s.id }}">
+        <td><i class="bi bi-grip-vertical drag-handle text-muted" style="cursor:grab;font-size:1.1rem;"></i></td>
+        <td>
+          <div class="d-flex align-items-center gap-2">
+            {% if s.sirket_logo %}
+            <img src="{{ url_for('static', filename='uploads/' + s.sirket_logo) }}"
+                 style="width:32px;height:32px;border-radius:8px;object-fit:contain;border:1px solid var(--border);background:white;padding:2px;">
+            {% endif %}
+            <span class="fw-500">{{ s.sirket_adi }}</span>
+          </div>
+        </td>
+        <td class="text-muted small">{{ s.alan or '—' }}</td>
+        <td class="text-muted small">
+          {% if s.baslangic or s.bitis %}
+          {{ s.baslangic }}{% if s.baslangic and s.bitis %} – {% endif %}{{ s.bitis }}
+          {% else %}—{% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('admin_staj_ekip', staj_id=s.id) }}" class="text-muted small">
+            <i class="bi bi-people me-1"></i>{{ s.ekip|length }} kişi
+          </a>
+        </td>
+        <td>
+          <a href="{{ url_for('admin_staj_ekip', staj_id=s.id) }}"
+             class="btn btn-sm btn-outline-primary me-1" title="Ekip">
+            <i class="bi bi-people"></i>
+          </a>
+          <a href="{{ url_for('admin_staj_duzenle', id=s.id) }}"
+             class="btn btn-sm btn-outline-secondary me-1">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <form method="POST" action="{{ url_for('admin_staj_sil', id=s.id) }}"
+                style="display:inline;"
+                onsubmit="return confirm('Bu stajı silmek istediğine emin misin?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" class="text-center text-muted py-4">
+          Henüz staj yok. <a href="{{ url_for('admin_staj_ekle') }}">İlkini ekle</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>initSortable('sortable-tbody', 'staj');</script>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Projeler{% endblock %}
+
+{% block extra_head %}
+<style>body { background: #ffffff; }</style>
+{% endblock %}
+
+{% block content %}
+<div class="section-header">
+  <div class="container">
+    <h1 class="section-title">
+      <i class="bi bi-code-square me-2 text-primary"></i>Projeler
+    </h1>
+    <p class="section-subtitle">Geliştirdiğim yazılım projeleri</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  {% if projeler %}
+  <div class="row g-4">
+    {% for proje in projeler %}
+    <div class="col-md-6 col-xl-4">
+      <div class="project-card">
+
+        <!-- PROJE RESİM ALANI -->
+        <div class="project-img-wrap">
+          {% if proje.fotograflar %}
+            <!-- Ana görsel + sağda küçük thumbnail'lar -->
+            <div class="project-img-main">
+              {% if proje.resim %}
+              <img src="{{ url_for('static', filename='uploads/' + proje.resim) }}"
+                   alt="{{ proje.baslik }}">
+              {% else %}
+              <div class="project-img-placeholder">
+                <i class="bi bi-code-slash"></i>
+              </div>
+              {% endif %}
+            </div>
+            <div class="project-img-thumbs">
+              {% for foto in proje.fotograflar[:4] %}
+              <a href="{{ url_for('static', filename='uploads/' + foto.dosya) }}" target="_blank"
+                 class="project-thumb-item">
+                <img src="{{ url_for('static', filename='uploads/' + foto.dosya) }}"
+                     alt="Ekran görüntüsü {{ loop.index }}">
+                {% if loop.index == 4 and proje.fotograflar|length > 4 %}
+                <div class="project-thumb-more">+{{ proje.fotograflar|length - 4 }}</div>
+                {% endif %}
+              </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <!-- Sadece ana görsel -->
+            {% if proje.resim %}
+            <img src="{{ url_for('static', filename='uploads/' + proje.resim) }}"
+                 alt="{{ proje.baslik }}" style="width:100%;height:100%;object-fit:cover;">
+            {% else %}
+            <div class="project-img-placeholder">
+              <i class="bi bi-code-slash"></i>
+            </div>
+            {% endif %}
+          {% endif %}
+
+          {% if proje.tarih %}
+          <div class="project-img-overlay">
+            <span class="project-date-badge">{{ proje.tarih }}</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- PROJE İÇERİĞİ -->
+        <div class="project-body">
+          <h4 class="project-title">{{ proje.baslik }}</h4>
+
+          {% if proje.teknolojiler %}
+          <div class="mb-2">
+            {% for tech in proje.teknolojiler.split(',') %}
+            <span class="tech-badge">{{ tech.strip() }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          {% if proje.aciklama %}
+          <div class="project-desc-wrap">
+            <p class="project-desc project-desc-clamped" id="desc-{{ proje.id }}">{{ proje.aciklama }}</p>
+            {% if proje.aciklama|length > 150 %}
+            <button class="project-read-more" onclick="toggleDesc({{ proje.id }}, this)">
+              Devamını Oku <i class="bi bi-chevron-down"></i>
+            </button>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <div class="project-links mt-auto">
+            {% if proje.github_link %}
+            <a href="{{ proje.github_link }}" target="_blank"
+               class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-github me-1"></i>GitHub
+            </a>
+            {% endif %}
+            {% if proje.demo_link %}
+            <a href="{{ proje.demo_link }}" target="_blank"
+               class="btn btn-sm btn-primary">
+              <i class="bi bi-box-arrow-up-right me-1"></i>Demo
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <i class="bi bi-code-square text-muted" style="font-size:3.5rem; opacity:.4;"></i>
+    <p class="text-muted mt-3 mb-0 fw-500">Henüz proje eklenmemiş.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleDesc(id, btn) {
+  var p = document.getElementById('desc-' + id);
+  var expanded = p.classList.toggle('project-desc-clamped');
+  if (!expanded) {
+    btn.innerHTML = 'Daha Az <i class="bi bi-chevron-up"></i>';
+  } else {
+    btn.innerHTML = 'Devamını Oku <i class="bi bi-chevron-down"></i>';
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ baslik }}{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>{{ baslik }}</h1>
+  <a href="{{ url_for('admin_stajlar') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>Geri
+  </a>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Şirket Adı *</label>
+        <input type="text" name="sirket_adi" class="form-control" required
+               value="{{ staj.sirket_adi if staj else '' }}"
+               placeholder="ABC Teknoloji A.Ş.">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Alan / Departman</label>
+        <input type="text" name="alan" class="form-control"
+               value="{{ staj.alan if staj else '' }}"
+               placeholder="Yazılım Geliştirme, Veri Analizi...">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Başlangıç Tarihi</label>
+        <input type="text" name="baslangic" class="form-control"
+               value="{{ staj.baslangic if staj else '' }}"
+               placeholder="Haziran 2024">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Bitiş Tarihi</label>
+        <input type="text" name="bitis" class="form-control"
+               value="{{ staj.bitis if staj else '' }}"
+               placeholder="Ağustos 2024">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sıra (küçük = önce)</label>
+        <input type="number" name="sira" class="form-control" min="0"
+               value="{{ staj.sira if staj else 0 }}">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Açıklama</label>
+        <textarea name="aciklama" class="form-control" rows="3"
+                  placeholder="Staj sırasında yaptığın işler...">{{ staj.aciklama if staj else '' }}</textarea>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Staj Raporu Linki</label>
+        <input type="url" name="rapor_link" class="form-control"
+               value="{{ staj.rapor_link if staj else '' }}"
+               placeholder="https://www.linkedin.com/posts/...">
+        <div class="form-text">LinkedIn makale/gönderi veya GitHub repo linki.</div>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Şirket Logosu</label>
+        {% if staj and staj.sirket_logo %}
+        <div class="mb-2">
+          <img src="{{ url_for('static', filename='uploads/' + staj.sirket_logo) }}"
+               alt="Logo" style="height:48px;border-radius:8px;border:1px solid var(--border);background:white;padding:4px;">
+        </div>
+        {% endif %}
+        <input type="file" name="sirket_logo" class="form-control" accept="image/*">
+        <div class="form-text">Şirket logosunu PNG/JPG olarak yükleyin.</div>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-lg me-1"></i>Kaydet
+      </button>
+      <a href="{{ url_for('admin_stajlar') }}" class="btn btn-outline-secondary">İptal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

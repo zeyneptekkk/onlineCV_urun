@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Ana Sayfa{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-md-auto text-center text-md-start">
+        {% if bilgi and bilgi.profil_foto %}
+          <img src="{{ url_for('static', filename='uploads/' + bilgi.profil_foto) }}"
+               alt="Profil" class="hero-img">
+        {% else %}
+          <div class="hero-img-placeholder mx-auto">
+            <i class="bi bi-person"></i>
+          </div>
+        {% endif %}
+      </div>
+      <div class="col text-center text-md-start">
+        <h1 class="mb-1">
+          {% if bilgi and bilgi.ad_soyad %}{{ bilgi.ad_soyad }}{% else %}İsim Soyisim{% endif %}
+        </h1>
+        <p class="lead mb-3">
+          {% if bilgi and bilgi.unvan %}{{ bilgi.unvan }}{% else %}Yazılım Geliştirici{% endif %}
+        </p>
+        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start mb-4">
+          {% if bilgi and bilgi.sehir %}
+          <span class="contact-badge">
+            <i class="bi bi-geo-alt"></i>{{ bilgi.sehir }}
+          </span>
+          {% endif %}
+          {% if bilgi and bilgi.email %}
+          <a href="mailto:{{ bilgi.email }}" class="contact-badge">
+            <i class="bi bi-envelope"></i>{{ bilgi.email }}
+          </a>
+          {% endif %}
+          {% if bilgi and bilgi.telefon %}
+          <a href="tel:{{ bilgi.telefon }}" class="contact-badge">
+            <i class="bi bi-telephone"></i>{{ bilgi.telefon }}
+          </a>
+          {% endif %}
+          {% if bilgi and bilgi.linkedin %}
+          <a href="{{ bilgi.linkedin }}" target="_blank" class="contact-badge">
+            <i class="bi bi-linkedin"></i>LinkedIn
+          </a>
+          {% endif %}
+          {% if bilgi and bilgi.github %}
+          <a href="{{ bilgi.github }}" target="_blank" class="contact-badge">
+            <i class="bi bi-github"></i>GitHub
+          </a>
+          {% endif %}
+          {% if bilgi and bilgi.leetcode %}
+          <a href="{{ bilgi.leetcode }}" target="_blank" class="contact-badge">
+            <i class="bi bi-code-slash"></i>LeetCode
+          </a>
+          {% endif %}
+        </div>
+        {% if bilgi and bilgi.cv_dosya %}
+        <a href="{{ url_for('static', filename='uploads/' + bilgi.cv_dosya) }}"
+           target="_blank" class="btn btn-primary me-2">
+          <i class="bi bi-download me-1"></i>CV İndir
+        </a>
+        {% endif %}
+        <a href="{{ url_for('projeler') }}" class="btn btn-outline-primary">
+          <i class="bi bi-code-square me-1"></i>Projelerim
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HAKKIMDA -->
+{% if bilgi and bilgi.ozet %}
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h2 class="section-title mb-3"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Hakkımda</h2>
+        <div class="cv-card">
+          <div class="card-body">
+            <p class="mb-0" style="line-height:1.8; color: var(--text-muted);">{{ bilgi.ozet }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- HIZLI LİNKLER -->
+<section class="py-4 pb-5">
+  <div class="container">
+    <h2 class="section-title mb-4"><i class="bi bi-grid me-2 text-primary"></i>Keşfet</h2>
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-3">
+        <a href="{{ url_for('projeler') }}" class="cert-category-card">
+          <span class="icon">💻</span>
+          <strong>Projeler</strong>
+          <div class="text-muted small mt-1">Geliştirdiğim yazılımlar</div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="{{ url_for('sertifikalar') }}" class="cert-category-card">
+          <span class="icon">🏅</span>
+          <strong>Sertifikalar</strong>
+          <div class="text-muted small mt-1">Eğitim ve başarılarım</div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="{{ url_for('referanslar') }}" class="cert-category-card">
+          <span class="icon">👥</span>
+          <strong>Referanslar</strong>
+          <div class="text-muted small mt-1">Birlikte çalıştığım kişiler</div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="{{ url_for('video_mulakat') }}" class="cert-category-card">
+          <span class="icon">🎥</span>
+          <strong>Video Mülakatlar</strong>
+          <div class="text-muted small mt-1">Mülakat kayıtlarım</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+  <h1>Hoş geldin, {{ session.get('admin_adi', 'Admin') }}!</h1>
+  <p class="text-muted mb-0">CV içeriklerini buradan yönetebilirsin.</p>
+</div>
+
+<!-- İSTATİSTİKLER -->
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#eff6ff;">
+        <i class="bi bi-code-square text-primary fs-4"></i>
+      </div>
+      <div>
+        <h3>{{ proje_sayisi }}</h3>
+        <p>Proje</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#f0fdf4;">
+        <i class="bi bi-award text-success fs-4"></i>
+      </div>
+      <div>
+        <h3>{{ sertifika_sayisi }}</h3>
+        <p>Sertifika</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#faf5ff;">
+        <i class="bi bi-people text-purple fs-4" style="color:#9333ea;"></i>
+      </div>
+      <div>
+        <h3>{{ referans_sayisi }}</h3>
+        <p>Referans</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fef2f2;">
+        <i class="bi bi-camera-video text-danger fs-4"></i>
+      </div>
+      <div>
+        <h3>{{ video_sayisi }}</h3>
+        <p>Video</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#f0fdf4;">
+        <i class="bi bi-stars fs-4" style="color:#16a34a;"></i>
+      </div>
+      <div>
+        <h3>{{ yetenek_sayisi }}</h3>
+        <p>Yetenek</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fff7ed;">
+        <i class="bi bi-briefcase fs-4" style="color:#ea580c;"></i>
+      </div>
+      <div>
+        <h3>{{ staj_sayisi }}</h3>
+        <p>Staj</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HIZLI İŞLEMLER -->
+<h5 class="fw-600 mb-3">Hızlı İşlemler</h5>
+<div class="row g-3">
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('admin_kisisel_bilgi') }}" class="cert-category-card text-start" style="padding:1.25rem;">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-person-fill text-primary fs-3"></i>
+        <div>
+          <strong class="d-block">Kişisel Bilgi</strong>
+          <small class="text-muted">Profil ve iletişim bilgilerini düzenle</small>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('admin_proje_ekle') }}" class="cert-category-card text-start" style="padding:1.25rem;">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-plus-square text-primary fs-3"></i>
+        <div>
+          <strong class="d-block">Proje Ekle</strong>
+          <small class="text-muted">Yeni bir proje ekle</small>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('admin_sertifika_ekle') }}" class="cert-category-card text-start" style="padding:1.25rem;">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-award text-success fs-3"></i>
+        <div>
+          <strong class="d-block">Sertifika Ekle</strong>
+          <small class="text-muted">Bootcamp, etkinlik veya yarışma ekle</small>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('admin_referans_ekle') }}" class="cert-category-card text-start" style="padding:1.25rem;">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-person-plus text-purple fs-3" style="color:#9333ea;"></i>
+        <div>
+          <strong class="d-block">Referans Ekle</strong>
+          <small class="text-muted">Yeni referans kişisi ekle</small>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('admin_video_ekle') }}" class="cert-category-card text-start" style="padding:1.25rem;">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-camera-video text-danger fs-3"></i>
+        <div>
+          <strong class="d-block">Video Ekle</strong>
+          <small class="text-muted">YouTube mülakat videosu ekle</small>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('admin_qr') }}" class="cert-category-card text-start" style="padding:1.25rem;">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-qr-code text-dark fs-3"></i>
+        <div>
+          <strong class="d-block">QR Kod</strong>
+          <small class="text-muted">Site QR kodunu indir</small>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+{% endblock %}

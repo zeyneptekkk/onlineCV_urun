@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Portfolio{% endblock %}{% if bilgi and bilgi.ad_soyad %} — {{ bilgi.ad_soyad }}{% endif %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('index') }}">
+      <i class="bi bi-person-circle me-2"></i>
+      {% if bilgi and bilgi.ad_soyad %}{{ bilgi.ad_soyad }}{% else %}Portfolio{% endif %}
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">
+            <i class="bi bi-house me-1"></i>Ana Sayfa
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'projeler' %}active{% endif %}" href="{{ url_for('projeler') }}">
+            <i class="bi bi-code-square me-1"></i>Projeler
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {% if request.endpoint in ['sertifikalar','sertifikalar_listesi','bootcamplar','etkinlikler','yarismalar'] %}active{% endif %}"
+             href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-award me-1"></i>Sertifikalar
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{{ url_for('sertifikalar_listesi') }}">
+                <i class="bi bi-patch-check me-2 text-primary"></i>Sertifikalar
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('bootcamplar') }}">
+                <i class="bi bi-mortarboard me-2 text-primary"></i>Bootcamplar
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('etkinlikler') }}">
+                <i class="bi bi-calendar-event me-2 text-success"></i>Katıldığım Etkinlikler
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{{ url_for('yarismalar') }}">
+                <i class="bi bi-trophy me-2 text-warning"></i>Katıldığım Yarışmalar
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'video_mulakat' %}active{% endif %}" href="{{ url_for('video_mulakat') }}">
+            <i class="bi bi-camera-video me-1"></i>Video Mülakatlar
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'yetenekler' %}active{% endif %}" href="{{ url_for('yetenekler') }}">
+            <i class="bi bi-stars me-1"></i>Yetenekler
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'staj' %}active{% endif %}" href="{{ url_for('staj') }}">
+            <i class="bi bi-briefcase me-1"></i>Staj
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'referanslar' %}active{% endif %}" href="{{ url_for('referanslar') }}">
+            <i class="bi bi-people me-1"></i>Referanslar
+          </a>
+        </li>
+        {% if session.get('admin_id') %}
+        <li class="nav-item ms-lg-2">
+          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_panel') }}">
+            <i class="bi bi-gear me-1"></i>Admin
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="container mt-3">
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="footer py-4 mt-5">
+  <div class="container text-center">
+    <div class="mb-2">
+      {% if bilgi and bilgi.linkedin %}
+      <a href="{{ bilgi.linkedin }}" target="_blank" class="footer-link me-3">
+        <i class="bi bi-linkedin fs-5"></i>
+      </a>
+      {% endif %}
+      {% if bilgi and bilgi.github %}
+      <a href="{{ bilgi.github }}" target="_blank" class="footer-link me-3">
+        <i class="bi bi-github fs-5"></i>
+      </a>
+      {% endif %}
+      {% if bilgi and bilgi.email %}
+      <a href="mailto:{{ bilgi.email }}" class="footer-link">
+        <i class="bi bi-envelope fs-5"></i>
+      </a>
+      {% endif %}
+    </div>
+    <p class="text-muted small mb-0">
+      &copy; 2024 {% if bilgi and bilgi.ad_soyad %}{{ bilgi.ad_soyad }}{% else %}Portfolio{% endif %}
+      &nbsp;&middot;&nbsp;
+      <a href="{{ url_for('admin_giris') }}" class="text-muted text-decoration-none">Yönetici Girişi</a>
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

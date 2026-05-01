@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ baslik }}{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>{{ baslik }}</h1>
+  <a href="{{ url_for('admin_yetenekler') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>Geri
+  </a>
+</div>
+
+<div class="form-card">
+  <form method="POST">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Yetenek Adı *</label>
+        <input type="text" name="isim" class="form-control" required
+               value="{{ yetenek.isim if yetenek else '' }}"
+               placeholder="Python, React, Git...">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Kategori</label>
+        <input type="text" name="kategori" class="form-control"
+               value="{{ yetenek.kategori if yetenek else 'Programlama Dilleri' }}"
+               list="kategori-list"
+               placeholder="Programlama Dilleri, Framework, Araçlar...">
+        <datalist id="kategori-list">
+          <option value="Programlama Dilleri">
+          <option value="Framework / Kütüphane">
+          <option value="Veritabanı">
+          <option value="Araçlar">
+          <option value="Diller">
+          <option value="Diğer">
+        </datalist>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Seviye</label>
+        <select name="seviye" class="form-select">
+          <option value="" {% if not yetenek or not yetenek.seviye %}selected{% endif %}>— Belirtme —</option>
+          <option value="Başlangıç" {% if yetenek and yetenek.seviye == 'Başlangıç' %}selected{% endif %}>Başlangıç</option>
+          <option value="Orta" {% if yetenek and yetenek.seviye == 'Orta' %}selected{% endif %}>Orta</option>
+          <option value="İleri" {% if yetenek and yetenek.seviye == 'İleri' %}selected{% endif %}>İleri</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sıra (küçük = önce)</label>
+        <input type="number" name="sira" class="form-control" min="0"
+               value="{{ yetenek.sira if yetenek else 0 }}">
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-lg me-1"></i>Kaydet
+      </button>
+      <a href="{{ url_for('admin_yetenekler') }}" class="btn btn-outline-secondary">İptal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

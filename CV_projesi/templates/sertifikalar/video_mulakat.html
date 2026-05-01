@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Video Mülakatlar{% endblock %}
+
+{% block content %}
+<div class="section-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item">
+          <a href="{{ url_for('sertifikalar') }}" class="text-muted text-decoration-none">Sertifikalar</a>
+        </li>
+        <li class="breadcrumb-item active">Video Mülakatlar</li>
+      </ol>
+    </nav>
+    <h1 class="section-title">
+      <i class="bi bi-camera-video me-2 text-danger"></i>Video Mülakatlar
+    </h1>
+    <p class="section-subtitle">Katıldığım mülakat video kayıtları</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  {% if videolar %}
+  <div class="row g-4">
+    {% for video in videolar %}
+    <div class="col-md-6 col-xl-4">
+      <div class="video-card">
+
+        <!-- ŞİRKET BAŞLIĞI -->
+        <div class="video-company-header">
+          {% if video.sirket_logo %}
+          <div class="company-logo-wrap">
+            <img src="{{ url_for('static', filename='uploads/' + video.sirket_logo) }}"
+                 alt="{{ video.sirket }}">
+          </div>
+          {% else %}
+          <div class="company-logo-placeholder">🏢</div>
+          {% endif %}
+          <div>
+            <div class="video-company-name">
+              {{ video.sirket if video.sirket else 'Bilinmiyor' }}
+            </div>
+            {% if video.tarih %}
+            <div class="video-company-date">
+              <i class="bi bi-calendar3" style="font-size:.7rem;"></i> {{ video.tarih }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- VIDEO -->
+        {% if video.youtube_link %}
+        <div class="video-embed">
+          <iframe src="{{ youtube_embed_url(video.youtube_link) }}"
+                  allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+          </iframe>
+        </div>
+        {% else %}
+        <div class="d-flex align-items-center justify-content-center bg-dark"
+             style="height:180px; color:rgba(255,255,255,.3); font-size:3rem;">
+          <i class="bi bi-camera-video-off"></i>
+        </div>
+        {% endif %}
+
+        <!-- DETAYLAR -->
+        <div class="video-body">
+          <h6 class="video-title">{{ video.baslik }}</h6>
+          {% if video.aciklama %}
+          <p class="video-desc">{{ video.aciklama }}</p>
+          {% endif %}
+          {% if video.youtube_link %}
+          <a href="{{ video.youtube_link }}" target="_blank"
+             class="btn btn-sm btn-outline-danger mt-2 align-self-start">
+            <i class="bi bi-youtube me-1"></i>YouTube'da İzle
+          </a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <i class="bi bi-camera-video text-muted" style="font-size:3.5rem; opacity:.4;"></i>
+    <p class="text-muted mt-3 mb-0 fw-500">Henüz video mülakat eklenmemiş.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

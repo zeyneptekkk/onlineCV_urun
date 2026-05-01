@@ -1,0 +1,68 @@
+{% extends "admin/base.html" %}
+{% block title %}Sertifikalar{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>Sertifikalar</h1>
+  <a href="{{ url_for('admin_sertifika_ekle') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Yeni Sertifika
+  </a>
+</div>
+
+<div class="admin-table">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th style="width:36px;"></th>
+        <th>Başlık</th>
+        <th>Kurum</th>
+        <th>Kategori</th>
+        <th>Tarih</th>
+        <th style="width:130px;">İşlem</th>
+      </tr>
+    </thead>
+    <tbody id="sortable-tbody">
+      {% for s in sertifikalar %}
+      <tr data-id="{{ s.id }}">
+        <td><i class="bi bi-grip-vertical drag-handle text-muted" style="cursor:grab;font-size:1.1rem;"></i></td>
+        <td class="fw-500">{{ s.baslik }}</td>
+        <td class="text-muted small">{{ s.kurum or '—' }}</td>
+        <td>
+          {% if s.kategori == 'bootcamp' %}
+          <span class="badge" style="background:#eff6ff;color:#2563eb;">Bootcamp</span>
+          {% elif s.kategori == 'etkinlik' %}
+          <span class="badge" style="background:#f0fdf4;color:#16a34a;">Etkinlik</span>
+          {% else %}
+          <span class="badge" style="background:#fffbeb;color:#d97706;">Yarışma</span>
+          {% endif %}
+        </td>
+        <td class="text-muted small">{{ s.tarih or '—' }}</td>
+        <td>
+          <a href="{{ url_for('admin_sertifika_duzenle', id=s.id) }}"
+             class="btn btn-sm btn-outline-secondary me-1">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <form method="POST" action="{{ url_for('admin_sertifika_sil', id=s.id) }}"
+                style="display:inline;"
+                onsubmit="return confirm('Bu sertifikayı silmek istediğine emin misin?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" class="text-center text-muted py-4">
+          Henüz sertifika yok. <a href="{{ url_for('admin_sertifika_ekle') }}">İlkini ekle</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>initSortable('sortable-tbody', 'sertifika');</script>
+{% endblock %}

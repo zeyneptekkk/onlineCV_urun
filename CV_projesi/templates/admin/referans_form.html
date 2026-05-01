@@ -1,0 +1,95 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ baslik }}{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>{{ baslik }}</h1>
+  <a href="{{ url_for('admin_referanslar') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>Geri
+  </a>
+</div>
+
+<div class="form-card">
+  <form method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Ad Soyad *</label>
+        <input type="text" name="ad_soyad" class="form-control" required
+               value="{{ referans.ad_soyad if referans else '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Şirket</label>
+        <input type="text" name="sirket" class="form-control"
+               value="{{ referans.sirket if referans else '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Pozisyon / Unvan</label>
+        <input type="text" name="pozisyon" class="form-control"
+               value="{{ referans.pozisyon if referans else '' }}"
+               placeholder="Yazılım Müdürü, İK Uzmanı...">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">İlişki / Nasıl Tanıyorsunuz</label>
+        <input type="text" name="iliski" class="form-control"
+               value="{{ referans.iliski if referans else '' }}"
+               placeholder="Eski Yönetici, Staj, Proje...">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Telefon</label>
+        <input type="text" name="telefon" class="form-control"
+               value="{{ referans.telefon if referans else '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">E-posta</label>
+        <input type="email" name="email" class="form-control"
+               value="{{ referans.email if referans else '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">LinkedIn</label>
+        <input type="url" name="linkedin" class="form-control"
+               value="{{ referans.linkedin if referans else '' }}"
+               placeholder="https://linkedin.com/in/...">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sıra (küçük = önce)</label>
+        <input type="number" name="sira" class="form-control" min="0"
+               value="{{ referans.sira if referans else 0 }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Profil Fotoğrafı</label>
+        {% if referans and referans.profil_foto %}
+        <div class="mb-2">
+          <img src="{{ url_for('static', filename='uploads/' + referans.profil_foto) }}"
+               alt="Profil" style="width:72px;height:72px;object-fit:cover;border-radius:50%;border:2px solid var(--border);">
+        </div>
+        {% endif %}
+        <input type="file" name="profil_foto" class="form-control" accept="image/*">
+        <div class="form-text">Referansın vesikalık veya profil fotoğrafı (PNG, JPG).</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Şirket Logosu</label>
+        {% if referans and referans.sirket_logo %}
+        <div class="mb-2">
+          <img src="{{ url_for('static', filename='uploads/' + referans.sirket_logo) }}"
+               alt="Logo" style="height:48px;border-radius:8px;border:1px solid var(--border);background:white;padding:4px;">
+        </div>
+        {% endif %}
+        <input type="file" name="sirket_logo" class="form-control" accept="image/*">
+        <div class="form-text">Kart arka planında görünecek şirket logosu.</div>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Açıklama / Not</label>
+        <textarea name="aciklama" class="form-control" rows="3"
+                  placeholder="Bu kişiyle ilgili not...">{{ referans.aciklama if referans else '' }}</textarea>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-check-lg me-1"></i>Kaydet
+      </button>
+      <a href="{{ url_for('admin_referanslar') }}" class="btn btn-outline-secondary">İptal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

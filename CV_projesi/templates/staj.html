@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Staj Tecrübesi{% endblock %}
+
+{% block content %}
+<div class="section-header">
+  <div class="container">
+    <h1 class="section-title">
+      <i class="bi bi-briefcase me-2 text-primary"></i>Staj Tecrübesi
+    </h1>
+    <p class="section-subtitle">Staj yaptığım yerler ve birlikte çalıştığım ekipler</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  {% if stajlar %}
+  {% for s in stajlar %}
+  <div class="staj-card mb-4">
+
+    <!-- ŞİRKET BAŞLIĞI -->
+    <div class="staj-header">
+      <div class="d-flex align-items-center gap-3 flex-grow-1">
+        {% if s.sirket_logo %}
+        <div class="staj-logo-wrap">
+          <img src="{{ url_for('static', filename='uploads/' + s.sirket_logo) }}"
+               alt="{{ s.sirket_adi }}">
+        </div>
+        {% else %}
+        <div class="staj-logo-placeholder">
+          <i class="bi bi-building"></i>
+        </div>
+        {% endif %}
+        <div>
+          <h4 class="staj-sirket">{{ s.sirket_adi }}</h4>
+          {% if s.alan %}
+          <div class="staj-alan">{{ s.alan }}</div>
+          {% endif %}
+        </div>
+      </div>
+      {% if s.baslangic or s.bitis %}
+      <div class="staj-tarih">
+        <i class="bi bi-calendar3 me-1"></i>
+        {{ s.baslangic }}{% if s.baslangic and s.bitis %} – {% endif %}{{ s.bitis }}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- AÇIKLAMA + RAPOR -->
+    {% if s.aciklama or s.rapor_link %}
+    <div class="staj-body">
+      {% if s.aciklama %}
+      <p class="staj-aciklama">{{ s.aciklama }}</p>
+      {% endif %}
+      {% if s.rapor_link %}
+      <a href="{{ s.rapor_link }}" target="_blank" class="staj-rapor-btn">
+        <i class="bi bi-file-earmark-text me-2"></i>Staj Raporumu Oku
+        <i class="bi bi-box-arrow-up-right ms-1" style="font-size:.75rem;"></i>
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- EKİP ÜYELERİ -->
+    {% if s.ekip %}
+    <div class="staj-ekip-section">
+      <div class="staj-ekip-baslik">
+        <i class="bi bi-people me-1"></i>Ekip Arkadaşları
+      </div>
+      <div class="team-grid">
+        {% for uye in s.ekip %}
+        <div class="team-card">
+          {% if uye.resim %}
+          <img src="{{ url_for('static', filename='uploads/' + uye.resim) }}"
+               alt="{{ uye.ad_soyad }}" class="team-photo">
+          {% else %}
+          <div class="team-avatar">{{ uye.ad_soyad[0] | upper }}</div>
+          {% endif %}
+          <div class="team-name">{{ uye.ad_soyad }}</div>
+          {% if uye.unvan %}
+          <div class="team-unvan">{{ uye.unvan }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+  {% endfor %}
+  {% else %}
+  <div class="text-center py-5">
+    <i class="bi bi-briefcase text-muted" style="font-size:3.5rem;opacity:.4;"></i>
+    <p class="text-muted mt-3 mb-0">Henüz staj tecrübesi eklenmemiş.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "admin/base.html" %}
+{% block title %}Projeler{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>Projeler</h1>
+  <a href="{{ url_for('admin_proje_ekle') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Yeni Proje
+  </a>
+</div>
+
+<div class="admin-table">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th style="width:36px;"></th>
+        <th>Başlık</th>
+        <th>Teknolojiler</th>
+        <th>Tarih</th>
+        <th style="width:130px;">İşlem</th>
+      </tr>
+    </thead>
+    <tbody id="sortable-tbody">
+      {% for proje in projeler %}
+      <tr data-id="{{ proje.id }}">
+        <td><i class="bi bi-grip-vertical drag-handle text-muted" style="cursor:grab;font-size:1.1rem;"></i></td>
+        <td>
+          <div class="fw-500">{{ proje.baslik }}</div>
+          {% if proje.github_link %}
+          <a href="{{ proje.github_link }}" target="_blank" class="text-muted small">
+            <i class="bi bi-github me-1"></i>GitHub
+          </a>
+          {% endif %}
+        </td>
+        <td>
+          {% if proje.teknolojiler %}
+          {% for tech in proje.teknolojiler.split(',')[:3] %}
+          <span class="tech-badge">{{ tech.strip() }}</span>
+          {% endfor %}
+          {% endif %}
+        </td>
+        <td class="text-muted small">{{ proje.tarih or '—' }}</td>
+        <td>
+          <a href="{{ url_for('admin_proje_duzenle', id=proje.id) }}"
+             class="btn btn-sm btn-outline-secondary me-1">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <form method="POST" action="{{ url_for('admin_proje_sil', id=proje.id) }}"
+                style="display:inline;"
+                onsubmit="return confirm('Bu projeyi silmek istediğine emin misin?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" class="text-center text-muted py-4">
+          Henüz proje yok. <a href="{{ url_for('admin_proje_ekle') }}">İlk projeyi ekle</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>initSortable('sortable-tbody', 'proje');</script>
+{% endblock %}

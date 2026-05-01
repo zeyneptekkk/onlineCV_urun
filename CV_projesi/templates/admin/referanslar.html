@@ -1,0 +1,68 @@
+{% extends "admin/base.html" %}
+{% block title %}Referanslar{% endblock %}
+
+{% block content %}
+<div class="admin-header d-flex justify-content-between align-items-center">
+  <h1>Referanslar</h1>
+  <a href="{{ url_for('admin_referans_ekle') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Yeni Referans
+  </a>
+</div>
+
+<div class="admin-table">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th style="width:36px;"></th>
+        <th>Ad Soyad</th>
+        <th>Şirket</th>
+        <th>Pozisyon</th>
+        <th>İlişki</th>
+        <th style="width:130px;">İşlem</th>
+      </tr>
+    </thead>
+    <tbody id="sortable-tbody">
+      {% for ref in referanslar %}
+      <tr data-id="{{ ref.id }}">
+        <td><i class="bi bi-grip-vertical drag-handle text-muted" style="cursor:grab;font-size:1.1rem;"></i></td>
+        <td>
+          <div class="d-flex align-items-center gap-2">
+            {% if ref.profil_foto %}
+            <img src="{{ url_for('static', filename='uploads/' + ref.profil_foto) }}"
+                 style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+            {% endif %}
+            <span class="fw-500">{{ ref.ad_soyad }}</span>
+          </div>
+        </td>
+        <td class="text-muted small">{{ ref.sirket or '—' }}</td>
+        <td class="text-muted small">{{ ref.pozisyon or '—' }}</td>
+        <td class="text-muted small">{{ ref.iliski or '—' }}</td>
+        <td>
+          <a href="{{ url_for('admin_referans_duzenle', id=ref.id) }}"
+             class="btn btn-sm btn-outline-secondary me-1">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <form method="POST" action="{{ url_for('admin_referans_sil', id=ref.id) }}"
+                style="display:inline;"
+                onsubmit="return confirm('Bu referansı silmek istediğine emin misin?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" class="text-center text-muted py-4">
+          Henüz referans yok. <a href="{{ url_for('admin_referans_ekle') }}">İlkini ekle</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>initSortable('sortable-tbody', 'referans');</script>
+{% endblock %}
