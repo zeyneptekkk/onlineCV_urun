@@ -1,6 +1,3 @@
-# Yüklenen dosyalar
-static/uploads/
-
 # Python
 __pycache__/
 *.pyc
