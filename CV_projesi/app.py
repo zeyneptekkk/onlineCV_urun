@@ -198,7 +198,33 @@ def dosya_kaydet(dosya, klasor):
 @app.route('/')
 def index():
     bilgi = KisiselBilgi.query.first()
-    return render_template('index.html', bilgi=bilgi)
+    projeler = Proje.query.order_by(Proje.sira, Proje.id.desc()).limit(4).all()
+    stajlar = Staj.query.order_by(Staj.sira, Staj.id.desc()).all()
+    referanslar = Referans.query.order_by(Referans.sira, Referans.id.desc()).all()
+    yetenekler_list = Yetenek.query.order_by(Yetenek.kategori, Yetenek.sira).all()
+    etkinlikler = Sertifika.query.filter_by(kategori='etkinlik').order_by(Sertifika.sira, Sertifika.id.desc()).limit(6).all()
+    sertifikalar = Sertifika.query.filter_by(kategori='sertifika').order_by(Sertifika.sira, Sertifika.id.desc()).limit(6).all()
+    videolar = VideoMulakat.query.order_by(VideoMulakat.sira, VideoMulakat.id.desc()).all()
+    kategoriler = {}
+    for y in yetenekler_list:
+        kategoriler.setdefault(y.kategori, []).append(y)
+    stats = {
+        'proje': Proje.query.count(),
+        'staj': Staj.query.count(),
+        'sertifika': Sertifika.query.count(),
+        'referans': Referans.query.count(),
+    }
+    return render_template('index.html',
+        bilgi=bilgi,
+        projeler=projeler,
+        stajlar=stajlar,
+        referanslar=referanslar,
+        kategoriler=kategoriler,
+        etkinlikler=etkinlikler,
+        sertifikalar=sertifikalar,
+        videolar=videolar,
+        stats=stats
+    )
 
 
 @app.route('/projeler')

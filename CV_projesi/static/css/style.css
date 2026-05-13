@@ -707,6 +707,90 @@ body {
   box-shadow: var(--shadow);
 }
 
+/* ── Hakkımda Bölümü ── */
+.hakkimda-section {
+  padding: 56px 0 48px;
+  background: var(--bg);
+}
+
+.hakkimda-card {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem 2.5rem 2rem;
+  box-shadow: var(--shadow-lg);
+  border-left: 5px solid var(--primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.hakkimda-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: var(--gradient);
+}
+
+.hakkimda-quote-mark {
+  font-size: 7rem;
+  line-height: .65;
+  font-weight: 900;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  flex-shrink: 0;
+  user-select: none;
+  margin-top: .2rem;
+}
+
+.hakkimda-body {
+  flex: 1;
+}
+
+.hakkimda-text {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.hakkimda-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hakkimda-line {
+  width: 36px;
+  height: 2px;
+  background: var(--gradient);
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.hakkimda-name {
+  font-size: .95rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -.2px;
+}
+
+.hakkimda-unvan {
+  font-size: .82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.hakkimda-unvan::before {
+  content: '·';
+  margin-right: 6px;
+  color: var(--border-solid);
+}
+
 /* ═══════════════════════════════════════════
    FOOTER
 ═══════════════════════════════════════════ */
@@ -1054,6 +1138,303 @@ main { animation: fadeUp .42s cubic-bezier(.4,0,.2,1) both; }
 .cert-foto-thumb:hover { transform: scale(1.1); box-shadow: var(--shadow-md); }
 
 /* ═══════════════════════════════════════════
+   KAYAN REFERANS ŞERİDİ (Marquee)
+═══════════════════════════════════════════ */
+.marquee-section {
+  padding: 64px 0 56px;
+  background: linear-gradient(135deg, #fce0e8 0%, #f5e8ec 50%, #fce0e8 100%);
+  border-top: 1px solid var(--border-solid);
+  border-bottom: 1px solid var(--border-solid);
+  overflow: hidden;
+}
+
+.marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+}
+
+.marquee-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 36px;
+  width: max-content;
+  animation: marqueeScroll 32s linear infinite;
+}
+
+.marquee-track:hover { animation-play-state: paused; }
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-16.666%); }
+}
+
+.marquee-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  width: 120px;
+  text-align: center;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+
+.marquee-item:hover { transform: translateY(-6px); }
+
+.marquee-photo-wrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  padding: 3px;
+  background: var(--gradient);
+  box-shadow: var(--shadow-md);
+  flex-shrink: 0;
+}
+
+.marquee-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid white;
+}
+
+.marquee-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: white;
+  border: 2px solid white;
+}
+
+.marquee-name {
+  font-size: .83rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.marquee-company {
+  font-size: .75rem;
+  color: var(--primary);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.marquee-pos {
+  font-size: .7rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════
+   HOME SECTIONS (scroll bölümleri)
+═══════════════════════════════════════════ */
+.home-section {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+}
+
+.home-section-alt {
+  background: rgba(245,232,236,.45);
+}
+
+.hs-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: rgba(190,18,60,.08);
+  border: 1px solid rgba(190,18,60,.18);
+  border-radius: 999px;
+  padding: .28rem .9rem;
+  margin-bottom: .75rem;
+}
+
+/* ═══════════════════════════════════════════
+   İSTATİSTİK BANNER
+═══════════════════════════════════════════ */
+.stats-banner {
+  padding: 48px 0;
+  background: var(--gradient);
+}
+
+.stat-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .25rem;
+}
+
+.stat-num {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -.05em;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.72);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ═══════════════════════════════════════════
+   STAJ TİMLİNE (ana sayfa)
+═══════════════════════════════════════════ */
+.staj-timeline {
+  position: relative;
+  padding-left: 36px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.staj-timeline::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--primary), transparent);
+}
+
+.staj-tl-item {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.staj-tl-dot {
+  position: absolute;
+  left: -29px;
+  top: 24px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.staj-tl-card {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--shadow);
+  transition: border-color .24s, box-shadow .24s;
+}
+
+.staj-tl-card:hover {
+  border-color: rgba(136,19,55,.3);
+  box-shadow: var(--shadow-md);
+}
+
+.staj-tl-sirket {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 .15rem;
+  letter-spacing: -.2px;
+}
+
+.staj-tl-alan {
+  font-size: .85rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.staj-tl-tarih {
+  font-size: .8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  background: var(--primary-light);
+  border-radius: 999px;
+  padding: .3rem .85rem;
+}
+
+.staj-tl-aciklama {
+  font-size: .9rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin: .75rem 0 0;
+}
+
+/* ═══════════════════════════════════════════
+   İLETİŞİM CTA
+═══════════════════════════════════════════ */
+.cta-section {
+  padding: 80px 0;
+}
+
+.cta-box {
+  background: var(--gradient);
+  border-radius: 24px;
+  padding: 3.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-box::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  pointer-events: none;
+}
+
+.cta-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: .75rem;
+  letter-spacing: -.5px;
+}
+
+.cta-sub {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,.78);
+  margin-bottom: 2rem;
+}
+
+/* ═══════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════ */
 @media (max-width: 768px) {
@@ -1064,4 +1445,11 @@ main { animation: fadeUp .42s cubic-bezier(.4,0,.2,1) both; }
   .admin-content  { padding: 1rem; }
   .section-header { padding: 2.5rem 0 1.5rem; }
   .section-title  { font-size: 1.55rem; }
+  .home-section   { padding: 52px 0; }
+  .hs-header      { margin-bottom: 32px; }
+  .stat-num       { font-size: 2rem; }
+  .staj-timeline  { padding-left: 24px; }
+  .staj-tl-dot    { left: -19px; }
+  .cta-title      { font-size: 1.65rem; }
+  .cta-box        { padding: 2.5rem 1.25rem; }
 }

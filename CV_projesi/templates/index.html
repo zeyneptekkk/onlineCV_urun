@@ -25,9 +25,7 @@
         </p>
         <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start mb-4">
           {% if bilgi and bilgi.sehir %}
-          <span class="contact-badge">
-            <i class="bi bi-geo-alt"></i>{{ bilgi.sehir }}
-          </span>
+          <span class="contact-badge"><i class="bi bi-geo-alt"></i>{{ bilgi.sehir }}</span>
           {% endif %}
           {% if bilgi and bilgi.email %}
           <a href="mailto:{{ bilgi.email }}" class="contact-badge">
@@ -71,14 +69,23 @@
 
 <!-- HAKKIMDA -->
 {% if bilgi and bilgi.ozet %}
-<section class="py-5">
+<section class="hakkimda-section">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <h2 class="section-title mb-3"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Hakkımda</h2>
-        <div class="cv-card">
-          <div class="card-body">
-            <p class="mb-0" style="line-height:1.8; color: var(--text-muted);">{{ bilgi.ozet }}</p>
+      <div class="col-lg-7">
+        <div class="hakkimda-card">
+          <div class="hakkimda-quote-mark">"</div>
+          <div class="hakkimda-body">
+            <p class="hakkimda-text">{{ bilgi.ozet }}</p>
+            <div class="hakkimda-footer">
+              <div class="hakkimda-line"></div>
+              <span class="hakkimda-name">
+                {{ bilgi.ad_soyad or 'Zeynep TEK' }}
+              </span>
+              {% if bilgi.unvan %}
+              <span class="hakkimda-unvan">{{ bilgi.unvan }}</span>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
@@ -87,40 +94,380 @@
 </section>
 {% endif %}
 
-<!-- HIZLI LİNKLER -->
-<section class="py-4 pb-5">
+<!-- İSTATİSTİKLER BANNER -->
+{% if stats.proje > 0 or stats.staj > 0 or stats.sertifika > 0 or stats.referans > 0 %}
+<section class="stats-banner reveal">
   <div class="container">
-    <h2 class="section-title mb-4"><i class="bi bi-grid me-2 text-primary"></i>Keşfet</h2>
-    <div class="row g-3">
-      <div class="col-sm-6 col-lg-3">
-        <a href="{{ url_for('projeler') }}" class="cert-category-card">
-          <span class="icon">💻</span>
-          <strong>Projeler</strong>
-          <div class="text-muted small mt-1">Geliştirdiğim yazılımlar</div>
-        </a>
+    <div class="row g-3 justify-content-center">
+      {% if stats.proje > 0 %}
+      <div class="col-6 col-md-3">
+        <div class="stat-bubble">
+          <span class="stat-num">{{ stats.proje }}</span>
+          <span class="stat-label">Proje</span>
+        </div>
       </div>
-      <div class="col-sm-6 col-lg-3">
-        <a href="{{ url_for('sertifikalar') }}" class="cert-category-card">
-          <span class="icon">🏅</span>
-          <strong>Sertifikalar</strong>
-          <div class="text-muted small mt-1">Eğitim ve başarılarım</div>
-        </a>
+      {% endif %}
+      {% if stats.staj > 0 %}
+      <div class="col-6 col-md-3">
+        <div class="stat-bubble">
+          <span class="stat-num">{{ stats.staj }}</span>
+          <span class="stat-label">Staj</span>
+        </div>
       </div>
-      <div class="col-sm-6 col-lg-3">
-        <a href="{{ url_for('referanslar') }}" class="cert-category-card">
-          <span class="icon">👥</span>
-          <strong>Referanslar</strong>
-          <div class="text-muted small mt-1">Birlikte çalıştığım kişiler</div>
-        </a>
+      {% endif %}
+      {% if stats.sertifika > 0 %}
+      <div class="col-6 col-md-3">
+        <div class="stat-bubble">
+          <span class="stat-num">{{ stats.sertifika }}+</span>
+          <span class="stat-label">Sertifika & Etkinlik</span>
+        </div>
       </div>
-      <div class="col-sm-6 col-lg-3">
-        <a href="{{ url_for('video_mulakat') }}" class="cert-category-card">
-          <span class="icon">🎥</span>
-          <strong>Video Mülakatlar</strong>
-          <div class="text-muted small mt-1">Mülakat kayıtlarım</div>
+      {% endif %}
+      {% if stats.referans > 0 %}
+      <div class="col-6 col-md-3">
+        <div class="stat-bubble">
+          <span class="stat-num">{{ stats.referans }}</span>
+          <span class="stat-label">Referans</span>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- KAYAN REFERANS ŞERİDİ -->
+{% if referanslar %}
+<section class="marquee-section">
+  <div class="container">
+    <div class="hs-header mb-0">
+      <span class="section-tag">Referanslar</span>
+      <h2 class="section-title">Birlikte Çalıştıklarım</h2>
+      <p class="section-subtitle">Hakkımda referans verebilecek kişiler</p>
+    </div>
+  </div>
+  <div class="marquee-wrapper mt-4">
+    <div class="marquee-track">
+      {% for _ in range(6) %}
+        {% for ref in referanslar %}
+        <div class="marquee-item">
+          <div class="marquee-photo-wrap">
+            {% if ref.profil_foto %}
+            <img src="{{ url_for('static', filename='uploads/' + ref.profil_foto) }}"
+                 alt="{{ ref.ad_soyad }}" class="marquee-avatar-img">
+            {% else %}
+            <div class="marquee-avatar-placeholder">{{ ref.ad_soyad[0] }}</div>
+            {% endif %}
+          </div>
+          <span class="marquee-name">{{ ref.ad_soyad }}</span>
+          {% if ref.sirket %}<span class="marquee-company">{{ ref.sirket }}</span>{% endif %}
+          {% if ref.pozisyon %}<span class="marquee-pos">{{ ref.pozisyon }}</span>{% endif %}
+        </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- STAJ DENEYİMİM -->
+{% if stajlar %}
+<section class="home-section reveal" id="stajlarim">
+  <div class="container">
+    <div class="hs-header">
+      <span class="section-tag">Deneyim</span>
+      <h2 class="section-title">Staj Deneyimim</h2>
+      <p class="section-subtitle">Çalıştığım şirketler ve kazandığım deneyimler</p>
+    </div>
+    <div class="staj-timeline">
+      {% for s in stajlar %}
+      <div class="staj-tl-item">
+        <div class="staj-tl-dot"></div>
+        <div class="staj-tl-card">
+          <div class="d-flex align-items-center gap-3 flex-wrap mb-2">
+            {% if s.sirket_logo %}
+            <div class="staj-logo-wrap">
+              <img src="{{ url_for('static', filename='uploads/' + s.sirket_logo) }}"
+                   alt="{{ s.sirket_adi }}">
+            </div>
+            {% else %}
+            <div class="staj-logo-placeholder">
+              <i class="bi bi-building"></i>
+            </div>
+            {% endif %}
+            <div class="flex-grow-1">
+              <h4 class="staj-tl-sirket">{{ s.sirket_adi }}</h4>
+              {% if s.alan %}<div class="staj-tl-alan">{{ s.alan }}</div>{% endif %}
+            </div>
+            {% if s.baslangic or s.bitis %}
+            <span class="staj-tl-tarih">
+              <i class="bi bi-calendar3 me-1"></i>
+              {{ s.baslangic }}{% if s.bitis %} – {{ s.bitis }}{% endif %}
+            </span>
+            {% endif %}
+          </div>
+          {% if s.aciklama %}
+          <p class="staj-tl-aciklama">{{ s.aciklama }}</p>
+          {% endif %}
+          {% if s.rapor_link %}
+          <a href="{{ s.rapor_link }}" target="_blank" class="staj-rapor-btn mt-2 d-inline-flex">
+            <i class="bi bi-file-earmark-text me-1"></i>Staj Raporu
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{{ url_for('staj') }}" class="btn btn-outline-primary px-4">
+        Staj Detayları <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- REFERANSLAR -->
+{% if referanslar %}
+<section class="home-section home-section-alt reveal" id="referanslarim">
+  <div class="container">
+    <div class="hs-header">
+      <span class="section-tag">Birlikte Çalıştıklarım</span>
+      <h2 class="section-title">Referanslar</h2>
+      <p class="section-subtitle">Birlikte çalıştığım kişiler</p>
+    </div>
+    <div class="row g-4">
+      {% for ref in referanslar[:3] %}
+      <div class="col-md-4">
+        <div class="ref-card">
+          <div class="ref-card-header">
+            {% if ref.sirket_logo %}
+            <div class="ref-company-bg">
+              <img src="{{ url_for('static', filename='uploads/' + ref.sirket_logo) }}"
+                   class="ref-company-bg-img" alt="">
+            </div>
+            {% endif %}
+            {% if ref.profil_foto %}
+            <img src="{{ url_for('static', filename='uploads/' + ref.profil_foto) }}"
+                 class="ref-photo" alt="{{ ref.ad_soyad }}">
+            {% else %}
+            <div class="ref-avatar">{{ ref.ad_soyad[0] }}</div>
+            {% endif %}
+          </div>
+          <div class="ref-card-body">
+            <div class="ref-name">{{ ref.ad_soyad }}</div>
+            {% if ref.pozisyon %}<div class="ref-position">{{ ref.pozisyon }}</div>{% endif %}
+            {% if ref.sirket %}
+            <div class="ref-company">
+              <i class="bi bi-building"></i>{{ ref.sirket }}
+            </div>
+            {% endif %}
+            {% if ref.iliski %}
+            <div class="mb-2"><span class="tech-badge">{{ ref.iliski }}</span></div>
+            {% endif %}
+            {% if ref.aciklama %}
+            <p class="ref-desc">"{{ ref.aciklama }}"</p>
+            {% endif %}
+            {% if ref.linkedin %}
+            <a href="{{ ref.linkedin }}" target="_blank" class="linkedin-btn">
+              <i class="bi bi-linkedin"></i>LinkedIn
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-5">
+      <a href="{{ url_for('referanslar') }}" class="btn btn-outline-primary px-4">
+        Tüm Referanslar <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- SERTİFİKALAR & ETKİNLİKLER -->
+{% if sertifikalar or etkinlikler %}
+<section class="home-section reveal" id="sertifikalarim">
+  <div class="container">
+    <div class="hs-header">
+      <span class="section-tag">Başarılar</span>
+      <h2 class="section-title">Katıldığım Etkinlikler & Sertifikalar</h2>
+      <p class="section-subtitle">Eğitimlerim ve katıldığım etkinlikler</p>
+    </div>
+    <div class="row g-4">
+      {% if etkinlikler %}
+      <div class="col-lg-6">
+        <h4 class="skill-group-title mb-3">
+          <i class="bi bi-calendar-event me-2 text-success"></i>Etkinlikler
+        </h4>
+        {% for item in etkinlikler %}
+        <div class="cert-card">
+          <div class="cert-icon etkinlik"><i class="bi bi-calendar-check"></i></div>
+          <div>
+            <div style="font-weight:700; font-size:.9rem; color:var(--text);">{{ item.baslik }}</div>
+            {% if item.kurum %}
+            <div style="font-size:.8rem; color:var(--text-muted);">{{ item.kurum }}</div>
+            {% endif %}
+            {% if item.tarih %}
+            <div style="font-size:.75rem; color:#16a34a; font-weight:600; margin-top:.2rem;">
+              {{ item.tarih }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if sertifikalar %}
+      <div class="col-lg-6">
+        <h4 class="skill-group-title mb-3">
+          <i class="bi bi-patch-check me-2 text-primary"></i>Sertifikalar
+        </h4>
+        {% for item in sertifikalar %}
+        <div class="cert-card">
+          <div class="cert-icon sertifika"><i class="bi bi-award"></i></div>
+          <div>
+            <div style="font-weight:700; font-size:.9rem; color:var(--text);">{{ item.baslik }}</div>
+            {% if item.kurum %}
+            <div style="font-size:.8rem; color:var(--text-muted);">{{ item.kurum }}</div>
+            {% endif %}
+            {% if item.tarih %}
+            <div style="font-size:.75rem; color:var(--accent2); font-weight:600; margin-top:.2rem;">
+              {{ item.tarih }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="text-center mt-5">
+      <a href="{{ url_for('sertifikalar') }}" class="btn btn-outline-primary px-4">
+        Tüm Sertifikalar <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- PROJELERİM -->
+{% if projeler %}
+<section class="home-section home-section-alt reveal" id="projelerim">
+  <div class="container">
+    <div class="hs-header">
+      <span class="section-tag">Yazılım</span>
+      <h2 class="section-title">Projelerim</h2>
+      <p class="section-subtitle">Geliştirdiğim yazılımlar</p>
+    </div>
+    <div class="row g-4">
+      {% for proje in projeler %}
+      <div class="col-md-6">
+        <div class="project-card">
+          <div class="project-img-wrap">
+            {% if proje.fotograflar %}
+              <div class="project-img-main">
+                <img src="{{ url_for('static', filename='uploads/' + proje.fotograflar[0].dosya) }}"
+                     alt="{{ proje.baslik }}">
+              </div>
+              {% if proje.fotograflar|length > 1 %}
+              <div class="project-img-thumbs">
+                {% for foto in proje.fotograflar[1:3] %}
+                <div class="project-thumb-item">
+                  <img src="{{ url_for('static', filename='uploads/' + foto.dosya) }}" alt="">
+                  {% if loop.last and proje.fotograflar|length > 3 %}
+                  <div class="project-thumb-more">+{{ proje.fotograflar|length - 3 }}</div>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            {% elif proje.resim %}
+              <img src="{{ url_for('static', filename='uploads/' + proje.resim) }}" alt="{{ proje.baslik }}">
+            {% else %}
+              <div class="project-img-placeholder"><i class="bi bi-code-square"></i></div>
+            {% endif %}
+            {% if proje.tarih %}
+            <div class="project-img-overlay">
+              <span class="project-date-badge">
+                <i class="bi bi-calendar3 me-1"></i>{{ proje.tarih }}
+              </span>
+            </div>
+            {% endif %}
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">{{ proje.baslik }}</h3>
+            {% if proje.teknolojiler %}
+            <div class="mb-2">
+              {% for tech in proje.teknolojiler.split(',') %}
+              <span class="tech-badge">{{ tech.strip() }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div class="project-desc-wrap">
+              <p class="project-desc project-desc-clamped">{{ proje.aciklama }}</p>
+            </div>
+            <div class="project-links">
+              {% if proje.github_link %}
+              <a href="{{ proje.github_link }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-github me-1"></i>GitHub
+              </a>
+              {% endif %}
+              {% if proje.demo_link %}
+              <a href="{{ proje.demo_link }}" target="_blank" class="btn btn-sm btn-primary">
+                <i class="bi bi-box-arrow-up-right me-1"></i>Demo
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-5">
+      <a href="{{ url_for('projeler') }}" class="btn btn-outline-primary px-4">
+        Tüm Projeleri Gör <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- İLETİŞİM CTA -->
+<section class="cta-section reveal">
+  <div class="container">
+    <div class="cta-box">
+      <h2 class="cta-title">Birlikte çalışalım!</h2>
+      <p class="cta-sub">
+        Projeler, staj veya işbirlikleri için iletişime geçmekten çekinmeyin.
+      </p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        {% if bilgi and bilgi.email %}
+        <a href="mailto:{{ bilgi.email }}" class="btn btn-primary px-4">
+          <i class="bi bi-envelope me-2"></i>E-posta Gönder
         </a>
+        {% endif %}
+        {% if bilgi and bilgi.linkedin %}
+        <a href="{{ bilgi.linkedin }}" target="_blank" class="linkedin-btn px-4">
+          <i class="bi bi-linkedin me-2"></i>LinkedIn
+        </a>
+        {% endif %}
       </div>
     </div>
   </div>
 </section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
 {% endblock %}
