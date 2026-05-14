@@ -102,7 +102,7 @@
       {% if stats.proje > 0 %}
       <div class="col-6 col-md-3">
         <div class="stat-bubble">
-          <span class="stat-num">{{ stats.proje }}</span>
+          <span class="stat-num" data-count="{{ stats.proje }}">0</span>
           <span class="stat-label">Proje</span>
         </div>
       </div>
@@ -110,7 +110,7 @@
       {% if stats.staj > 0 %}
       <div class="col-6 col-md-3">
         <div class="stat-bubble">
-          <span class="stat-num">{{ stats.staj }}</span>
+          <span class="stat-num" data-count="{{ stats.staj }}">0</span>
           <span class="stat-label">Staj</span>
         </div>
       </div>
@@ -118,7 +118,7 @@
       {% if stats.sertifika > 0 %}
       <div class="col-6 col-md-3">
         <div class="stat-bubble">
-          <span class="stat-num">{{ stats.sertifika }}+</span>
+          <span class="stat-num" data-count="{{ stats.sertifika }}" data-suffix="+">0</span>
           <span class="stat-label">Sertifika & Etkinlik</span>
         </div>
       </div>
@@ -126,7 +126,7 @@
       {% if stats.referans > 0 %}
       <div class="col-6 col-md-3">
         <div class="stat-bubble">
-          <span class="stat-num">{{ stats.referans }}</span>
+          <span class="stat-num" data-count="{{ stats.referans }}">0</span>
           <span class="stat-label">Referans</span>
         </div>
       </div>
@@ -135,6 +135,7 @@
   </div>
 </section>
 {% endif %}
+
 
 <!-- KAYAN REFERANS ŞERİDİ -->
 {% if referanslar %}
@@ -165,6 +166,51 @@
         </div>
         {% endfor %}
       {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- YARIŞMALAR & BAŞARILAR -->
+{% if yarismalar %}
+<section class="home-section home-section-alt reveal" id="yarismalarim">
+  <div class="container">
+    <div class="hs-header">
+      <span class="section-tag">Başarı</span>
+      <h2 class="section-title">Yarışmalar & Başarılar</h2>
+      <p class="section-subtitle">Katıldığım yarışmalar ve elde ettiğim başarılar</p>
+    </div>
+    <div class="yarisma-grid">
+      {% for item in yarismalar %}
+      <div class="yarisma-card">
+
+        <!-- gerçekçi havai fişek canvas -->
+        <canvas class="yarisma-canvas" aria-hidden="true"></canvas>
+
+        <div class="yarisma-photo-wrap">
+          <img src="{{ url_for('static', filename='uploads/' + item.fotograflar[0].dosya) }}"
+               alt="{{ item.baslik }}" class="yarisma-photo">
+          <div class="yarisma-badge"><i class="bi bi-trophy-fill"></i></div>
+        </div>
+        <div class="yarisma-body">
+          <h4 class="yarisma-title">{{ item.baslik }}</h4>
+          {% if item.kurum %}
+          <div class="yarisma-kurum"><i class="bi bi-building me-1"></i>{{ item.kurum }}</div>
+          {% endif %}
+          {% if item.tarih %}
+          <div class="yarisma-tarih"><i class="bi bi-calendar3 me-1"></i>{{ item.tarih }}</div>
+          {% endif %}
+          {% if item.aciklama %}
+          <p class="yarisma-desc">{{ item.aciklama }}</p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-5">
+      <a href="{{ url_for('yarismalar') }}" class="btn btn-outline-primary px-4">
+        Tüm Yarışmalar <i class="bi bi-arrow-right ms-1"></i>
+      </a>
     </div>
   </div>
 </section>
@@ -227,126 +273,61 @@
 </section>
 {% endif %}
 
-<!-- REFERANSLAR -->
-{% if referanslar %}
-<section class="home-section home-section-alt reveal" id="referanslarim">
+
+<!-- SERTİFİKALAR & ETKİNLİKLER -->
+{% if etkinlikler %}
+<section class="home-section reveal" id="sertifikalarim">
   <div class="container">
     <div class="hs-header">
-      <span class="section-tag">Birlikte Çalıştıklarım</span>
-      <h2 class="section-title">Referanslar</h2>
-      <p class="section-subtitle">Birlikte çalıştığım kişiler</p>
+      <span class="section-tag">Başarılar</span>
+      <h2 class="section-title">Katıldığım Etkinlikler</h2>
+      <p class="section-subtitle">Katıldığım etkinlikler ve anılar</p>
     </div>
-    <div class="row g-4">
-      {% for ref in referanslar[:3] %}
-      <div class="col-md-4">
-        <div class="ref-card">
-          <div class="ref-card-header">
-            {% if ref.sirket_logo %}
-            <div class="ref-company-bg">
-              <img src="{{ url_for('static', filename='uploads/' + ref.sirket_logo) }}"
-                   class="ref-company-bg-img" alt="">
+    <div class="etk-timeline">
+      {% for item in etkinlikler %}
+      <div class="etk-timeline-item">
+        <div class="etk-timeline-dot"></div>
+        <div class="etk-card etk-card-row">
+
+          {% if item.fotograflar %}
+          <div class="etk-car etk-car-side" id="etk-{{ loop.index }}" data-cur="0">
+            <div class="etk-car-track">
+              {% for foto in item.fotograflar %}
+              <div class="etk-car-slide">
+                <img src="{{ url_for('static', filename='uploads/' + foto.dosya) }}" alt="{{ item.baslik }}">
+              </div>
+              {% endfor %}
+            </div>
+            {% if item.fotograflar|length > 1 %}
+            <button class="etk-nav-btn etk-nav-prev" data-car="etk-{{ loop.index }}">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="etk-nav-btn etk-nav-next" data-car="etk-{{ loop.index }}">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+            <div class="etk-dots-row">
+              {% for foto in item.fotograflar %}
+              <span class="etk-dot{% if loop.first %} active{% endif %}"></span>
+              {% endfor %}
             </div>
             {% endif %}
-            {% if ref.profil_foto %}
-            <img src="{{ url_for('static', filename='uploads/' + ref.profil_foto) }}"
-                 class="ref-photo" alt="{{ ref.ad_soyad }}">
-            {% else %}
-            <div class="ref-avatar">{{ ref.ad_soyad[0] }}</div>
-            {% endif %}
           </div>
-          <div class="ref-card-body">
-            <div class="ref-name">{{ ref.ad_soyad }}</div>
-            {% if ref.pozisyon %}<div class="ref-position">{{ ref.pozisyon }}</div>{% endif %}
-            {% if ref.sirket %}
-            <div class="ref-company">
-              <i class="bi bi-building"></i>{{ ref.sirket }}
-            </div>
-            {% endif %}
-            {% if ref.iliski %}
-            <div class="mb-2"><span class="tech-badge">{{ ref.iliski }}</span></div>
-            {% endif %}
-            {% if ref.aciklama %}
-            <p class="ref-desc">"{{ ref.aciklama }}"</p>
-            {% endif %}
-            {% if ref.linkedin %}
-            <a href="{{ ref.linkedin }}" target="_blank" class="linkedin-btn">
-              <i class="bi bi-linkedin"></i>LinkedIn
-            </a>
-            {% endif %}
+          {% endif %}
+
+          <div class="etk-body etk-body-side">
+            {% if item.tarih %}<div class="etk-date">{{ item.tarih }}</div>{% endif %}
+            <div class="etk-title">{{ item.baslik }}</div>
+            {% if item.kurum %}<div class="etk-kurum"><i class="bi bi-building me-1"></i>{{ item.kurum }}</div>{% endif %}
+            {% if item.aciklama %}<p class="etk-desc">{{ item.aciklama }}</p>{% endif %}
           </div>
+
         </div>
       </div>
       {% endfor %}
     </div>
     <div class="text-center mt-5">
-      <a href="{{ url_for('referanslar') }}" class="btn btn-outline-primary px-4">
-        Tüm Referanslar <i class="bi bi-arrow-right ms-1"></i>
-      </a>
-    </div>
-  </div>
-</section>
-{% endif %}
-
-<!-- SERTİFİKALAR & ETKİNLİKLER -->
-{% if sertifikalar or etkinlikler %}
-<section class="home-section reveal" id="sertifikalarim">
-  <div class="container">
-    <div class="hs-header">
-      <span class="section-tag">Başarılar</span>
-      <h2 class="section-title">Katıldığım Etkinlikler & Sertifikalar</h2>
-      <p class="section-subtitle">Eğitimlerim ve katıldığım etkinlikler</p>
-    </div>
-    <div class="row g-4">
-      {% if etkinlikler %}
-      <div class="col-lg-6">
-        <h4 class="skill-group-title mb-3">
-          <i class="bi bi-calendar-event me-2 text-success"></i>Etkinlikler
-        </h4>
-        {% for item in etkinlikler %}
-        <div class="cert-card">
-          <div class="cert-icon etkinlik"><i class="bi bi-calendar-check"></i></div>
-          <div>
-            <div style="font-weight:700; font-size:.9rem; color:var(--text);">{{ item.baslik }}</div>
-            {% if item.kurum %}
-            <div style="font-size:.8rem; color:var(--text-muted);">{{ item.kurum }}</div>
-            {% endif %}
-            {% if item.tarih %}
-            <div style="font-size:.75rem; color:#16a34a; font-weight:600; margin-top:.2rem;">
-              {{ item.tarih }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-      {% if sertifikalar %}
-      <div class="col-lg-6">
-        <h4 class="skill-group-title mb-3">
-          <i class="bi bi-patch-check me-2 text-primary"></i>Sertifikalar
-        </h4>
-        {% for item in sertifikalar %}
-        <div class="cert-card">
-          <div class="cert-icon sertifika"><i class="bi bi-award"></i></div>
-          <div>
-            <div style="font-weight:700; font-size:.9rem; color:var(--text);">{{ item.baslik }}</div>
-            {% if item.kurum %}
-            <div style="font-size:.8rem; color:var(--text-muted);">{{ item.kurum }}</div>
-            {% endif %}
-            {% if item.tarih %}
-            <div style="font-size:.75rem; color:var(--accent2); font-weight:600; margin-top:.2rem;">
-              {{ item.tarih }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-    </div>
-    <div class="text-center mt-5">
-      <a href="{{ url_for('sertifikalar') }}" class="btn btn-outline-primary px-4">
-        Tüm Sertifikalar <i class="bi bi-arrow-right ms-1"></i>
+      <a href="{{ url_for('etkinlikler') }}" class="btn btn-outline-primary px-4">
+        Tüm Etkinlikler <i class="bi bi-arrow-right ms-1"></i>
       </a>
     </div>
   </div>
@@ -469,5 +450,146 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Stat count-up
+(function(){
+  function animateCount(el){
+    if(el.dataset.animated) return;
+    el.dataset.animated = '1';
+    const target = parseInt(el.dataset.count, 10);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1800;
+    const start = performance.now();
+    (function step(now){
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    })(start);
+  }
+  const banner = document.querySelector('.stats-banner');
+  if(banner){
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting)
+          e.target.querySelectorAll('.stat-num[data-count]').forEach(animateCount);
+      });
+    }, { threshold: 0.3 }).observe(banner);
+  }
+})();
+
+// Etkinlik carousel
+(function(){
+  function etkGo(carId, dir){
+    const car = document.getElementById(carId);
+    if(!car) return;
+    const slides = car.querySelectorAll('.etk-car-slide');
+    const dots   = car.querySelectorAll('.etk-dot');
+    let cur = +(car.dataset.cur||0);
+    cur = (cur + dir + slides.length) % slides.length;
+    car.dataset.cur = cur;
+    car.querySelector('.etk-car-track').style.transform = `translateX(-${cur*100}%)`;
+    dots.forEach((d,i) => d.classList.toggle('active', i===cur));
+  }
+  document.querySelectorAll('.etk-nav-prev').forEach(btn =>
+    btn.addEventListener('click', () => etkGo(btn.dataset.car, -1)));
+  document.querySelectorAll('.etk-nav-next').forEach(btn =>
+    btn.addEventListener('click', () => etkGo(btn.dataset.car, 1)));
+  document.querySelectorAll('.etk-car[id]').forEach(car => {
+    if(car.querySelectorAll('.etk-car-slide').length > 1)
+      setInterval(() => etkGo(car.id, 1), 3800);
+  });
+})();
+
+// Gerçekçi havai fişek — canvas
+(function(){
+  const COLORS = [
+    '#ff4757','#ffa502','#2ed573','#1e90ff','#ff6b81',
+    '#eccc68','#a29bfe','#fd79a8','#ffffff','#ffd700',
+    '#00cec9','#e17055'
+  ];
+
+  function initFireworks(canvas) {
+    const card = canvas.parentElement;
+    let W, H, particles = [], raf;
+
+    function resize() {
+      W = canvas.width  = card.offsetWidth;
+      H = canvas.height = card.offsetHeight;
+    }
+    resize();
+    new ResizeObserver(resize).observe(card);
+
+    function burst(cx, cy) {
+      const color  = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const color2 = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const count  = 55 + Math.floor(Math.random() * 35);
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 / count) * i + (Math.random() - .5) * .4;
+        const speed = 1.5 + Math.random() * 4.5;
+        const c     = Math.random() < .5 ? color : color2;
+        particles.push({
+          x: cx, y: cy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          alpha: 1,
+          color: c,
+          size: 1.5 + Math.random() * 2.5,
+          decay: .013 + Math.random() * .014,
+          gravity: .055,
+          tail: []
+        });
+      }
+    }
+
+    function scheduleBurst() {
+      const x = W * (.15 + Math.random() * .7);
+      const y = H * (.1  + Math.random() * .55);
+      burst(x, y);
+      setTimeout(scheduleBurst, 600 + Math.random() * 900);
+    }
+    scheduleBurst();
+
+    const ctx = canvas.getContext('2d');
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.tail.push({x: p.x, y: p.y, a: p.alpha});
+        if (p.tail.length > 5) p.tail.shift();
+
+        /* kuyruk */
+        for (let t = 0; t < p.tail.length; t++) {
+          const tp = p.tail[t];
+          ctx.globalAlpha = tp.a * (t / p.tail.length) * .35;
+          ctx.fillStyle   = p.color;
+          ctx.beginPath();
+          ctx.arc(tp.x, tp.y, p.size * .6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        /* ana partikül */
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle   = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.alpha, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.vy += p.gravity;
+        p.vx *= .97;
+        p.alpha -= p.decay;
+        if (p.alpha <= 0) particles.splice(i, 1);
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  document.querySelectorAll('.yarisma-canvas').forEach(initFireworks);
+})();
 </script>
 {% endblock %}

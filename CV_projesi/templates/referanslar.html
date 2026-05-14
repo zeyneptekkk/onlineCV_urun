@@ -95,4 +95,47 @@
   </div>
   {% endif %}
 </div>
+
+<!-- FOTO ZOOM OVERLAY -->
+<div id="ref-zoom-modal">
+  <div class="ref-zoom-backdrop"></div>
+  <button class="ref-zoom-close" id="ref-zoom-close"><i class="bi bi-x"></i></button>
+  <div class="ref-zoom-content">
+    <img id="ref-zoom-img" src="" alt="">
+    <div id="ref-zoom-name"></div>
+    <div id="ref-zoom-pos"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const modal    = document.getElementById('ref-zoom-modal');
+  const zoomImg  = document.getElementById('ref-zoom-img');
+  const zoomName = document.getElementById('ref-zoom-name');
+  const zoomPos  = document.getElementById('ref-zoom-pos');
+
+  document.querySelectorAll('.ref-photo').forEach(photo => {
+    photo.addEventListener('click', () => {
+      zoomImg.src = photo.src;
+      const card = photo.closest('.ref-card');
+      zoomName.textContent = card.querySelector('.ref-name')?.textContent || '';
+      zoomPos.textContent  = card.querySelector('.ref-position')?.textContent || '';
+      modal.classList.add('active');
+    });
+  });
+
+  document.getElementById('ref-zoom-close').addEventListener('click', e => {
+    e.stopPropagation();
+    modal.classList.remove('active');
+  });
+
+  modal.querySelector('.ref-zoom-backdrop').addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') modal.classList.remove('active');
+  });
+})();
+</script>
 {% endblock %}

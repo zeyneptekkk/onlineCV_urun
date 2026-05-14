@@ -204,6 +204,7 @@ def index():
     yetenekler_list = Yetenek.query.order_by(Yetenek.kategori, Yetenek.sira).all()
     etkinlikler = Sertifika.query.filter_by(kategori='etkinlik').order_by(Sertifika.sira, Sertifika.id.desc()).limit(6).all()
     sertifikalar = Sertifika.query.filter_by(kategori='sertifika').order_by(Sertifika.sira, Sertifika.id.desc()).limit(6).all()
+    yarismalar = Sertifika.query.filter_by(kategori='yarısma').filter(Sertifika.fotograflar.any()).order_by(Sertifika.sira, Sertifika.id.desc()).all()
     videolar = VideoMulakat.query.order_by(VideoMulakat.sira, VideoMulakat.id.desc()).all()
     kategoriler = {}
     for y in yetenekler_list:
@@ -222,6 +223,7 @@ def index():
         kategoriler=kategoriler,
         etkinlikler=etkinlikler,
         sertifikalar=sertifikalar,
+        yarismalar=yarismalar,
         videolar=videolar,
         stats=stats
     )
