@@ -1745,7 +1745,7 @@ main { animation: fadeUp .42s cubic-bezier(.4,0,.2,1) both; }
   .hero           {
     padding: 3.5rem 0 2.5rem;
     background:
-      linear-gradient(rgba(245,232,236,.20) 0%, rgba(245,232,236,.55) 100%),
+      linear-gradient(rgba(245,232,236,.70) 0%, rgba(245,232,236,.85) 100%),
       url('/static/img/a.png') right 30% / cover no-repeat;
   }
   .hero::before, .hero::after { display: none; }
