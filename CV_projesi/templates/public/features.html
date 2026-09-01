@@ -1,0 +1,61 @@
+{% extends "saas_base.html" %}
+
+{% block title %}Özellikler - OnlineCV{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+<div class="row mb-5 text-center">
+    <div class="col-12">
+        <h1 class="display-5 fw-bold mb-3">Özellikler</h1>
+        <p class="lead text-muted">OnlineCV ile CV'nizi oluşturmanızı, optimize etmenizi ve paylaşmanızı sağlayan araçlar</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-3">✨ AI Destekli Metin Optimizasyonu</h3>
+                <p class="text-muted mb-0">Kendinizi tanıtan paragrafı profesyonel, kısa &amp; etkili, teknik/uzman veya modern/girişimci tonlardan birine göre AI ile yeniden yazın.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-3">🔗 Paylaşılabilir Public Link</h3>
+                <p class="text-muted mb-0">Her kullanıcının kendine ait bir public CV linki olur. Abonelik süresi dolsa bile bu link canlı ve read-only olarak çalışmaya devam eder.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-3">💳 Aylık / Yıllık Abonelik</h3>
+                <p class="text-muted mb-0">Abonelik aktifken CV düzenleme ve AI optimizasyonu açık kalır; süresi dolduğunda düzenleme kapanır, yenilendiğinde tekrar açılır.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-3">🎨 Kişiselleştirilebilir CV</h3>
+                <p class="text-muted mb-0">Fotoğrafınızı, deneyimlerinizi ve bilgilerinizi girerek tek ve şık bir CV tasarımını kendinize göre doldurun.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2 bg-primary text-white p-5 rounded text-center">
+        <h3>Hemen Başlayın</h3>
+        <p>Kayıt olun, planınızı seçin ve ilk CV'nizi oluşturun</p>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg mt-3">Kaydol</a>
+    </div>
+</div>
+</div>
+
+{% endblock %}

@@ -20,3 +20,7 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# SaaS runtime data (databases, user-uploaded resume photos)
+instance/
+static/uploads/resumes/

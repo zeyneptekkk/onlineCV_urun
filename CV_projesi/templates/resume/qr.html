@@ -1,0 +1,32 @@
+{% extends "saas_base.html" %}
+
+{% block title %}QR Kod - {{ resume.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="themed-card p-4 text-center">
+            <h2 class="mb-1">CV'nizin QR Kodu</h2>
+            <p class="text-muted mb-4">
+                Bir etkinlikte veya görüşmede kağıt CV yerine bu kodu okutun;
+                karşınızdaki kişi CV'nizi anında kendi telefonunda görüntülesin.
+            </p>
+
+            <img src="data:image/png;base64,{{ qr_image }}" alt="QR Kod" class="img-fluid mb-3" style="max-width:280px;">
+
+            <p class="text-muted small mb-4">{{ public_url }}</p>
+
+            <div class="d-flex gap-2 justify-content-center flex-wrap">
+                <a href="{{ url_for('resume.resume_qr_download', resume_id=resume.id) }}" class="btn btn-primary">
+                    <i class="bi bi-download me-1"></i>PNG İndir
+                </a>
+                <a href="{{ url_for('resume.edit_resume', resume_id=resume.id) }}" class="btn btn-secondary">
+                    Geri Dön
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

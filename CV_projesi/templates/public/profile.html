@@ -1,0 +1,219 @@
+{% extends "saas_base.html" %}
+
+{% block title %}{{ resume.full_name }} - CV{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero hero-saas profile-hero">
+  <div class="container">
+    <div class="profile-banner-wrap">
+      <div class="profile-banner">
+        <div class="profile-banner-name">{{ resume.full_name }}</div>
+      </div>
+      <div class="profile-avatar-row">
+        {% if resume.profile_photo %}
+          <img src="{{ url_for('static', filename='uploads/' + resume.profile_photo) }}"
+               alt="Profil" class="hero-img">
+        {% else %}
+          <div class="hero-img-placeholder">
+            <i class="bi bi-person"></i>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="text-center text-md-start">
+      <h1 class="mb-1">{{ resume.full_name }}</h1>
+      {% if resume.job_title %}
+        <p class="lead mb-3">{{ resume.job_title }}</p>
+      {% endif %}
+
+      <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
+        {% if resume.city %}
+        <span class="contact-badge"><i class="bi bi-geo-alt"></i>{{ resume.city }}</span>
+        {% endif %}
+        {% if resume.email %}
+        <a href="mailto:{{ resume.email }}" class="contact-badge">
+          <i class="bi bi-envelope"></i>{{ resume.email }}
+        </a>
+        {% endif %}
+        {% if resume.phone %}
+        <a href="tel:{{ resume.phone }}" class="contact-badge">
+          <i class="bi bi-telephone"></i>{{ resume.phone }}
+        </a>
+        {% endif %}
+        {% if resume.linkedin %}
+        <a href="{{ resume.linkedin }}" target="_blank" class="contact-badge">
+          <i class="bi bi-linkedin"></i>LinkedIn
+        </a>
+        {% endif %}
+        {% if resume.github %}
+        <a href="{{ resume.github }}" target="_blank" class="contact-badge">
+          <i class="bi bi-github"></i>GitHub
+        </a>
+        {% endif %}
+        {% if resume.website %}
+        <a href="{{ resume.website }}" target="_blank" class="contact-badge">
+          <i class="bi bi-globe"></i>Web Sitesi
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÖZET (quote card) -->
+{% if resume.summary %}
+<section class="hakkimda-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="hakkimda-card">
+          <div class="hakkimda-quote-mark">"</div>
+          <div class="hakkimda-body">
+            <p class="hakkimda-text">{{ resume.summary }}</p>
+            <div class="hakkimda-footer">
+              <div class="hakkimda-line"></div>
+              <span class="hakkimda-name">{{ resume.full_name }}</span>
+              {% if resume.job_title %}
+                <span class="hakkimda-unvan">{{ resume.job_title }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<div class="container pb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <!-- Experience -->
+      {% if resume.experience %}
+        <div class="themed-card p-4 mb-4">
+          <h3 class="section-title mb-3" style="font-size:1.4rem;">Deneyim</h3>
+          {% for exp in resume.experience %}
+            <div class="mb-3 pb-3 {% if not loop.last %}border-bottom{% endif %}">
+              <h6 class="mb-0">{{ exp.position }}</h6>
+              <p class="text-muted small mb-1">{{ exp.company }}</p>
+              <p class="text-muted small mb-2">{{ exp.start_date }} - {{ exp.end_date }}</p>
+              {% if exp.description %}
+                <p class="mb-0">{{ exp.description }}</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Education -->
+      {% if resume.education %}
+        <div class="themed-card p-4 mb-4">
+          <h3 class="section-title mb-3" style="font-size:1.4rem;">Eğitim</h3>
+          {% for edu in resume.education %}
+            <div class="mb-3 pb-3 {% if not loop.last %}border-bottom{% endif %}">
+              <h6 class="mb-0">{{ edu.degree }} - {{ edu.field }}</h6>
+              <p class="text-muted small mb-1">{{ edu.school }}</p>
+              <p class="text-muted small mb-0">{{ edu.graduation_year }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Skills -->
+      {% if resume.skills %}
+        <div class="themed-card p-4 mb-4">
+          <h3 class="section-title mb-3" style="font-size:1.4rem;">Yetenekler</h3>
+          <div>
+            {% for skill in resume.skills %}
+              <span class="tech-badge">{{ skill.name }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Sertifikalar / Bootcamp / Etkinlik / Yarışma -->
+      {% if resume.achievements %}
+        {% set labels = {'sertifika': 'Sertifikalar', 'bootcamp': 'Bootcamp\'ler', 'etkinlik': 'Etkinlikler', 'yarisma': 'Yarışmalar'} %}
+        {% for cat, label in labels.items() %}
+          {% set items = resume.achievements|selectattr('category', 'equalto', cat)|list %}
+          {% if items %}
+            <div class="themed-card p-4 mb-4">
+              <h3 class="section-title mb-3" style="font-size:1.4rem;">{{ label }}</h3>
+              <div class="row g-3">
+                {% for item in items %}
+                  <div class="col-md-6">
+                    <div class="d-flex gap-3 h-100">
+                      {% if item.photo %}
+                        <img src="{{ url_for('static', filename='uploads/' + item.photo) }}" alt=""
+                             style="width:56px;height:56px;object-fit:cover;border-radius:14px;flex-shrink:0;">
+                      {% else %}
+                        <div class="landing-feature-icon" style="width:56px;height:56px;flex-shrink:0;">
+                          <i class="bi bi-award"></i>
+                        </div>
+                      {% endif %}
+                      <div>
+                        <h6 class="mb-0">{{ item.title }}</h6>
+                        <p class="text-muted small mb-1">
+                          {{ item.organization }}{% if item.date %} &middot; {{ item.date }}{% endif %}
+                        </p>
+                        {% if item.description %}
+                          <p class="small mb-0">{{ item.description }}</p>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      <!-- Referanslar -->
+      {% if resume.references %}
+        <div class="themed-card p-4">
+          <h3 class="section-title mb-3" style="font-size:1.4rem;">Referanslar</h3>
+          <div class="row g-3">
+            {% for ref in resume.references %}
+              <div class="col-md-6">
+                <div class="d-flex gap-3 align-items-center h-100">
+                  {% if ref.photo %}
+                    <img src="{{ url_for('static', filename='uploads/' + ref.photo) }}" alt=""
+                         style="width:52px;height:52px;object-fit:cover;border-radius:50%;flex-shrink:0;">
+                  {% else %}
+                    <div class="hero-img-placeholder" style="width:52px;height:52px;font-size:1.2rem;flex-shrink:0;">
+                      <i class="bi bi-person"></i>
+                    </div>
+                  {% endif %}
+                  <div>
+                    <h6 class="mb-0">{{ ref.full_name }}</h6>
+                    <p class="text-muted small mb-1">
+                      {{ ref.position }}{% if ref.company %} &middot; {{ ref.company }}{% endif %}
+                    </p>
+                    {% if ref.relation %}
+                      <p class="small text-muted mb-0">{{ ref.relation }}</p>
+                    {% endif %}
+                    {% if ref.linkedin %}
+                      <a href="{{ ref.linkedin }}" target="_blank" class="small">LinkedIn</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<!-- Footer Info -->
+<div class="text-center text-muted mb-5 small">
+    <p>Bu CV OnlineCV tarafından oluşturulmuştur. <a href="/">Kendi CV'nizi oluşturun</a></p>
+</div>
+
+{% endblock %}

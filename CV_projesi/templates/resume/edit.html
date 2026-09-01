@@ -1,0 +1,321 @@
+{% extends "saas_base.html" %}
+
+{% block title %}{{ resume.title }} - Düzenle{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">{{ resume.title }}</h2>
+        
+        <form method="POST" enctype="multipart/form-data" class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">CV Başlığı</label>
+                    <input type="text" class="form-control" name="title" value="{{ resume.title }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Profil Fotoğrafı</label>
+                    <div class="d-flex align-items-center gap-3">
+                        {% if resume.profile_photo %}
+                            <img src="{{ url_for('static', filename='uploads/' + resume.profile_photo) }}" alt="Profil" class="hero-img" style="width:64px;height:64px;">
+                        {% else %}
+                            <div class="hero-img-placeholder" style="width:64px;height:64px;font-size:1.5rem;">
+                                <i class="bi bi-person"></i>
+                            </div>
+                        {% endif %}
+                        <input type="file" class="form-control" name="profile_photo" accept="image/png,image/jpeg,image/gif,image/webp">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Ad Soyad</label>
+                    <input type="text" class="form-control" name="full_name" value="{{ resume.full_name }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Meslek/Ünvan</label>
+                    <input type="text" class="form-control" name="job_title" value="{{ resume.job_title }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Özet</label>
+                    <textarea class="form-control" name="summary" rows="4">{{ resume.summary }}</textarea>
+                    <small class="text-muted">AI ile bu metni optimize etmek için aşağıya inin</small>
+                </div>
+                
+                <hr>
+                
+                <h5>İletişim Bilgileri</h5>
+                
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" value="{{ resume.email }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Telefon</label>
+                    <input type="tel" class="form-control" name="phone" value="{{ resume.phone }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Şehir</label>
+                    <input type="text" class="form-control" name="city" value="{{ resume.city }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">LinkedIn</label>
+                    <input type="url" class="form-control" name="linkedin" value="{{ resume.linkedin }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">GitHub</label>
+                    <input type="url" class="form-control" name="github" value="{{ resume.github }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Web Sitesi</label>
+                    <input type="url" class="form-control" name="website" value="{{ resume.website }}">
+                </div>
+                
+                <hr>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <a href="{{ url_for('resume.preview_resume', resume_id=resume.id) }}" class="btn btn-info">Önizle</a>
+                    {% if resume.is_published %}
+                        <a href="{{ url_for('resume.resume_qr', resume_id=resume.id) }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-qr-code"></i> QR Kod
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('dashboard.index') }}" class="btn btn-secondary">İptal</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- AI Optimizer Section -->
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title">✨ AI Optimize Edicisi</h5>
+                <p class="text-muted">Özet metninizi AI ile farklı tonlarda optimize edin</p>
+                
+                <div class="mb-3">
+                    <label class="form-label">Ton Seçin</label>
+                    <select class="form-control" id="aiTone">
+                        <option value="professional">Profesyonel</option>
+                        <option value="technical">Teknik</option>
+                        <option value="short">Kısa ve Etkili</option>
+                        <option value="modern">Modern</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="btn btn-warning" id="optimizeBtn">Optimize Et</button>
+                
+                <div id="optimizedResult" class="mt-3" style="display:none;">
+                    <div class="alert alert-success">
+                        <strong>Optimized Metin:</strong>
+                        <div id="optimizedText" class="mt-2"></div>
+                        <button type="button" class="btn btn-sm btn-success mt-2" id="applyBtn">Bunu Kullan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sertifikalar / Bootcamp / Etkinlikler / Yarışmalar -->
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">🏆 Sertifikalar, Bootcamp, Etkinlik &amp; Yarışmalar</h5>
+
+                {% if resume.achievements %}
+                <div class="row g-3 mb-3">
+                    {% for item in resume.achievements %}
+                    <div class="col-md-6">
+                        <div class="border rounded p-3 h-100 d-flex gap-2">
+                            {% if item.photo %}
+                            <img src="{{ url_for('static', filename='uploads/' + item.photo) }}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:10px;flex-shrink:0;">
+                            {% endif %}
+                            <div class="flex-grow-1">
+                                <span class="badge bg-secondary mb-1">{{ {'sertifika':'Sertifika','bootcamp':'Bootcamp','etkinlik':'Etkinlik','yarisma':'Yarışma'}[item.category] }}</span>
+                                <h6 class="mb-0">{{ item.title }}</h6>
+                                <p class="text-muted small mb-1">{{ item.organization }} {% if item.date %}&middot; {{ item.date }}{% endif %}</p>
+                            </div>
+                            <form method="POST" action="{{ url_for('resume.delete_achievement', resume_id=resume.id, achievement_id=item.id) }}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addAchievementForm">
+                    + Yeni Ekle
+                </button>
+
+                <div class="collapse mt-3" id="addAchievementForm">
+                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('resume.add_achievement', resume_id=resume.id) }}">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <label class="form-label">Tür</label>
+                                <select class="form-control" name="category">
+                                    <option value="sertifika">Sertifika</option>
+                                    <option value="bootcamp">Bootcamp</option>
+                                    <option value="etkinlik">Etkinlik</option>
+                                    <option value="yarisma">Yarışma</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">Başlık</label>
+                                <input type="text" class="form-control" name="title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Kurum</label>
+                                <input type="text" class="form-control" name="organization">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tarih</label>
+                                <input type="text" class="form-control" name="date" placeholder="örn. 2025-Kasım">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Açıklama</label>
+                                <textarea class="form-control" name="description" rows="2"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Görsel</label>
+                                <input type="file" class="form-control" name="photo" accept="image/png,image/jpeg,image/gif,image/webp">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-sm mt-2">Ekle</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Referanslar -->
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">👥 Referanslar</h5>
+
+                {% if resume.references %}
+                <div class="row g-3 mb-3">
+                    {% for ref in resume.references %}
+                    <div class="col-md-6">
+                        <div class="border rounded p-3 h-100 d-flex gap-2">
+                            {% if ref.photo %}
+                            <img src="{{ url_for('static', filename='uploads/' + ref.photo) }}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:50%;flex-shrink:0;">
+                            {% else %}
+                            <div class="hero-img-placeholder" style="width:48px;height:48px;font-size:1.1rem;flex-shrink:0;"><i class="bi bi-person"></i></div>
+                            {% endif %}
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0">{{ ref.full_name }}</h6>
+                                <p class="text-muted small mb-0">{{ ref.position }} {% if ref.company %}&middot; {{ ref.company }}{% endif %}</p>
+                            </div>
+                            <form method="POST" action="{{ url_for('resume.delete_reference', resume_id=resume.id, reference_id=ref.id) }}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addReferenceForm">
+                    + Yeni Ekle
+                </button>
+
+                <div class="collapse mt-3" id="addReferenceForm">
+                    <form method="POST" enctype="multipart/form-data" action="{{ url_for('resume.add_reference', resume_id=resume.id) }}">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Ad Soyad</label>
+                                <input type="text" class="form-control" name="full_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Şirket</label>
+                                <input type="text" class="form-control" name="company">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Pozisyon</label>
+                                <input type="text" class="form-control" name="position">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">İlişki</label>
+                                <input type="text" class="form-control" name="relation" placeholder="örn. Yöneticim">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">LinkedIn</label>
+                                <input type="url" class="form-control" name="linkedin">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fotoğraf</label>
+                                <input type="file" class="form-control" name="photo" accept="image/png,image/jpeg,image/gif,image/webp">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Not</label>
+                                <textarea class="form-control" name="description" rows="2"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-sm mt-2">Ekle</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('optimizeBtn').addEventListener('click', async function() {
+    const tone = document.getElementById('aiTone').value;
+    const text = document.querySelector('textarea[name="summary"]').value;
+    
+    if (!text.trim()) {
+        alert('Lütfen önce özet yazınız');
+        return;
+    }
+    
+    try {
+        const response = await fetch('{{ url_for("api.optimize_summary") }}', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({text: text, tone: tone})
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById('optimizedText').innerText = data.optimized;
+            document.getElementById('optimizedResult').style.display = 'block';
+            
+            document.getElementById('applyBtn').onclick = function() {
+                document.querySelector('textarea[name="summary"]').value = data.optimized;
+                document.getElementById('optimizedResult').style.display = 'none';
+            };
+        } else {
+            alert('Hata: ' + data.error);
+        }
+    } catch(e) {
+        alert('İstek başarısız: ' + e);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "saas_base.html" %}
+
+{% block title %}Ödeme - OnlineCV{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Ödemeyi Tamamla</h3>
+                
+                <div class="alert alert-info">
+                    <p class="mb-0"><strong>Plan:</strong> {{ 'Aylık' if payment.plan_type == 'monthly' else 'Yıllık' }}</p>
+                    <p class="mb-0"><strong>Tutar:</strong> {{ payment.amount }} {{ payment.currency }}</p>
+                </div>
+                
+                <form method="POST">
+                    <div class="alert alert-warning">
+                        <p class="mb-0">
+                            <strong>⚠️ Test Modu:</strong> Bu MVP'de dummy ödeme sistemi kullanılmaktadır. 
+                            Gerçek ödeme Stripe ile entegre edilecektir.
+                        </p>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">
+                        Ödemeyi Onayla - {{ payment.amount }} {{ payment.currency }}
+                    </button>
+                </form>
+                
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('dashboard.choose_plan') }}" class="text-muted">← Geri Dön</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

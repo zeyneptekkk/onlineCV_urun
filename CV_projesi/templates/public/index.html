@@ -1,0 +1,294 @@
+{% extends "saas_base.html" %}
+
+{% block title %}OnlineCV - Profesyonel CV Oluşturun{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="landing-hero text-center">
+  <div class="hero-bubbles" aria-hidden="true">
+    <span class="bubble b1"></span>
+    <span class="bubble b2"></span>
+    <span class="bubble b3"></span>
+    <span class="bubble b4"></span>
+    <span class="bubble b5"></span>
+    <span class="bubble b6"></span>
+  </div>
+  <div class="container">
+    <h1>Profesyonel CV'nizi Dakikalar İçinde Oluşturun</h1>
+    <p class="lead">AI destekli editörle bilgilerinizi girin, özetinizi optimize edin ve tek bir linkle iş dünyasıyla paylaşın.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg px-4">Hemen Başlayın</a>
+
+    <div class="landing-trust-row">
+      <span><i class="bi bi-stars"></i>AI Destekli Optimizasyon</span>
+      <span><i class="bi bi-link-45deg"></i>Paylaşılabilir Link</span>
+      <span><i class="bi bi-lightning-charge"></i>Dakikalar İçinde Hazır</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE CARDS -->
+<div class="container">
+  <div class="row g-4 landing-feature-cards">
+    <div class="col-md-4">
+      <div class="landing-feature-card">
+        <div class="landing-feature-icon"><i class="bi bi-magic"></i></div>
+        <h3>AI ile Optimize Edin</h3>
+        <p>CV özetinizi profesyonel, teknik, kısa veya modern tonda yeniden yazdırın; en iyisini seçin.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="landing-feature-card">
+        <div class="landing-feature-icon"><i class="bi bi-person-badge"></i></div>
+        <h3>Kendi Bilgileriniz, Tek Tasarım</h3>
+        <p>Fotoğrafınızı ve bilgilerinizi girin, şık ve tutarlı bir CV tasarımına anında dönüşsün.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="landing-feature-card">
+        <div class="landing-feature-icon"><i class="bi bi-share"></i></div>
+        <h3>Kolayca Paylaşın</h3>
+        <p>Size özel bir link ile CV'nizi paylaşın; abonelik bitse bile link her zaman görüntülenebilir kalır.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CV ÖNİZLEME ÖRNEĞİ -->
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center text-center mb-4">
+      <div class="col-lg-7">
+        <h2 class="section-title" style="font-size:1.9rem;">CV'niz Böyle Görünecek</h2>
+        <p class="section-subtitle">Bilgilerinizi girin, tasarımı biz hallederiz</p>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="cv-preview-card" id="cvPreviewCard">
+          <div class="cv-preview-bar">
+            <span></span><span></span><span></span>
+            <div class="cv-preview-url"><span id="cvPreviewUrlText"></span><span class="cv-preview-caret"></span></div>
+            <div class="cv-preview-cursor" id="cvPreviewCursor"><i class="bi bi-cursor-fill"></i></div>
+          </div>
+          <div class="cv-preview-scrollarea" id="cvPreviewScrollArea">
+          <div class="cv-preview-hero">
+            <div class="profile-banner-wrap" style="margin-bottom:48px;">
+              <div class="profile-banner" style="height:130px;">
+                <div class="profile-banner-name" style="font-size:2.1rem;">Ayşe Yılmaz</div>
+              </div>
+              <div class="profile-avatar-row" style="bottom:-40px;">
+                <div class="hero-img-placeholder" style="width:80px;height:80px;font-size:1.9rem;">
+                  <i class="bi bi-person"></i>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 class="mb-0" style="font-size:1.3rem;">Ayşe Yılmaz</h3>
+              <p class="text-muted mb-2">Kıdemli Ürün Tasarımcısı</p>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="contact-badge"><i class="bi bi-geo-alt"></i>İstanbul</span>
+                <span class="contact-badge"><i class="bi bi-envelope"></i>ayse@ornek.com</span>
+                <span class="contact-badge"><i class="bi bi-telephone"></i>0532 000 00 00</span>
+                <span class="contact-badge"><i class="bi bi-linkedin"></i>LinkedIn</span>
+                <span class="contact-badge"><i class="bi bi-github"></i>GitHub</span>
+                <span class="contact-badge"><i class="bi bi-globe"></i>Portföy Sitesi</span>
+              </div>
+            </div>
+          </div>
+          <div class="cv-preview-body">
+            <p class="text-muted mb-4">"7 yıllık deneyimimle kullanıcı odaklı dijital ürünler tasarlıyor, ekiplerin daha iyi kararlar almasına yardımcı oluyorum."</p>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <p class="cv-preview-label"><i class="bi bi-award"></i> Sertifikalar &amp; Yarışmalar</p>
+                <div class="d-flex gap-2 mb-2">
+                  <div class="landing-feature-icon" style="width:40px;height:40px;font-size:1.1rem;"><i class="bi bi-award"></i></div>
+                  <div>
+                    <p class="mb-0 fw-semibold small">AWS Certified</p>
+                    <p class="mb-0 text-muted small">Amazon · 2024</p>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <div class="landing-feature-icon" style="width:40px;height:40px;font-size:1.1rem;"><i class="bi bi-trophy"></i></div>
+                  <div>
+                    <p class="mb-0 fw-semibold small">Hackathon Birinciliği</p>
+                    <p class="mb-0 text-muted small">TechCareer · 2025</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <p class="cv-preview-label"><i class="bi bi-people"></i> Referanslar</p>
+                <div class="d-flex gap-2 mb-2">
+                  <div class="hero-img-placeholder" style="width:40px;height:40px;font-size:1rem;"><i class="bi bi-person"></i></div>
+                  <div>
+                    <p class="mb-0 fw-semibold small">Mehmet Demir</p>
+                    <p class="mb-0 text-muted small">Takım Lideri · ABC A.Ş.</p>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <div class="hero-img-placeholder" style="width:40px;height:40px;font-size:1rem;"><i class="bi bi-person"></i></div>
+                  <div>
+                    <p class="mb-0 fw-semibold small">Elif Kaya</p>
+                    <p class="mb-0 text-muted small">Proje Yöneticisi</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SSS -->
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center text-center mb-4">
+      <div class="col-lg-7">
+        <h2 class="section-title" style="font-size:1.9rem;">Sıkça Sorulan Sorular</h2>
+        <p class="section-subtitle">Merak ettiklerinizin cevapları</p>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="accordion" id="faqAccordion">
+
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                OnlineCV nedir?
+              </button>
+            </h3>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                OnlineCV, bilgilerinizi doldurarak dakikalar içinde tek ve şık bir tasarımda profesyonel bir CV oluşturmanızı sağlayan aylık abonelikli bir platformdur. Ad-soyad, fotoğraf, iletişim bilgileri, deneyim, eğitim ve yetenekler gibi standart alanların yanında; sertifikalarınızı, katıldığınız bootcamp ve etkinlikleri, kazandığınız yarışmaları ve sizi tanıyan referans kişileri de CV'nize ekleyebilirsiniz. Doldurduğunuz bilgiler otomatik olarak size özel, paylaşılabilir bir link üzerinden (<code>onlinecv.com/u/ad_soyad_CV</code> formatında) canlı bir sayfaya dönüşür; bu linki iş başvurularınızda, LinkedIn'de veya özgeçmişinizin isteneceği her yerde paylaşabilirsiniz. Her yayınlanan CV için otomatik olarak bir QR kod da oluşturulur: örneğin bir networking etkinliğinde veya görüşmede kağıt üzerinde CV uzatmak yerine, karşınızdaki kişiye bu QR kodu okutmanız yeterli olur — CV'niz saniyeler içinde onların telefonunda açılır. Bu hem CV'nizi daha erişilebilir hem de akılda kalıcı hale getirir.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                AI optimizasyonu nasıl çalışıyor?
+              </button>
+            </h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Kendinizi tanıtan özet metninizi profesyonel, teknik, kısa &amp; etkili veya modern olmak üzere 4 farklı tonda yeniden yazar; beğendiğiniz versiyonu CV'nize uygularsınız.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                Aboneliğim sona erince ne olur?
+              </button>
+            </h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                CV düzenleme ve AI optimizasyonu kapanır, ama yayınladığınız public CV linkiniz her zaman görüntülenebilir (read-only) kalır. Aboneliğinizi yenilediğinizde düzenleme tekrar açılır.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                Kendi fotoğrafımı ekleyebilir miyim?
+              </button>
+            </h3>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Evet, CV düzenleme sayfasından kendi profil fotoğrafınızı yükleyebilirsiniz.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h3 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                İstediğim zaman iptal edebilir miyim?
+              </button>
+            </h3>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Evet, aboneliğinizi dilediğiniz zaman iptal edebilirsiniz.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box">
+      <h2 class="cta-title">Hemen Başlayın</h2>
+      <p class="cta-sub">Kayıt olun, planınızı seçin ve ilk CV'nizi bugün oluşturun.</p>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg px-4">Kaydol</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+  var card = document.getElementById('cvPreviewCard');
+  if (!card) return;
+
+  var urlTextEl = document.getElementById('cvPreviewUrlText');
+  var scrollArea = document.getElementById('cvPreviewScrollArea');
+  var cursor = document.getElementById('cvPreviewCursor');
+  var fullUrl = 'onlinecv.com/u/ayse_yilmaz_CV';
+  var played = false;
+
+  function playSequence() {
+    if (played) return;
+    played = true;
+
+    var i = 0;
+    var typeInterval = setInterval(function() {
+      urlTextEl.textContent = fullUrl.slice(0, i + 1);
+      i++;
+      if (i >= fullUrl.length) {
+        clearInterval(typeInterval);
+        setTimeout(function() {
+          var cardRect = card.getBoundingClientRect();
+          var endRect = urlTextEl.getBoundingClientRect();
+          cursor.style.left = (endRect.right - cardRect.left + 6) + 'px';
+          cursor.style.top = (endRect.top - cardRect.top - 2) + 'px';
+          cursor.classList.add('show');
+
+          setTimeout(function() {
+            cursor.classList.add('click');
+            scrollArea.classList.add('expanded');
+            setTimeout(function() { cursor.classList.remove('click'); }, 200);
+            setTimeout(function() { cursor.classList.remove('show'); }, 900);
+          }, 650);
+        }, 350);
+      }
+    }, 55);
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        playSequence();
+      }
+    });
+  }, { threshold: 0.4 });
+
+  observer.observe(card);
+})();
+</script>
+{% endblock %}

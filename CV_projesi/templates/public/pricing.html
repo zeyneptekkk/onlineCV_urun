@@ -1,0 +1,90 @@
+{% extends "saas_base.html" %}
+
+{% block title %}Fiyatlandırma - OnlineCV{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+<div class="row justify-content-center mb-4">
+    <div class="col-md-8 text-center">
+        <h1>Fiyatlandırma</h1>
+        <p class="text-muted">Profesyonel CV'nizi oluşturun ve AI ile optimize edin</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="row g-4">
+            <!-- Monthly Plan -->
+            <div class="col-md-6">
+                <div class="card h-100 border-primary">
+                    <div class="card-body">
+                        <h3 class="card-title">Aylık Plan</h3>
+                        <p class="h2 text-primary">99 TL <span class="h6 text-muted">/ay</span></p>
+                        
+                        <ul class="list-unstyled">
+                            <li class="mb-2">✓ CV Editor</li>
+                            <li class="mb-2">✓ AI Optimizasyon</li>
+                            <li class="mb-2">✓ AI ile 4 farklı tarzda özet önerisi</li>
+                            <li class="mb-2">✓ Paylaşılabilir Link</li>
+                            <li class="mb-2">✓ 30 Gün Geçerli</li>
+                        </ul>
+                        
+                        {% if current_user %}
+                            <form method="POST" action="{{ url_for('dashboard.choose_plan') }}">
+                                <input type="hidden" name="plan" value="monthly">
+                                <button type="submit" class="btn btn-primary w-100">Başla</button>
+                            </form>
+                        {% else %}
+                            <a href="{{ url_for('auth.register') }}" class="btn btn-primary w-100">Kaydol</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Yearly Plan -->
+            <div class="col-md-6">
+                <div class="card h-100 border-success">
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <span class="badge bg-success">En Popüler</span>
+                        </div>
+                        
+                        <h3 class="card-title">Yıllık Plan</h3>
+                        <p class="h2 text-success">899 TL <span class="h6 text-muted">/yıl</span></p>
+                        <p class="text-muted small">Aylık sadece 75 TL!</p>
+                        
+                        <ul class="list-unstyled">
+                            <li class="mb-2">✓ CV Editor</li>
+                            <li class="mb-2">✓ AI Optimizasyon</li>
+                            <li class="mb-2">✓ AI ile 4 farklı tarzda özet önerisi</li>
+                            <li class="mb-2">✓ Paylaşılabilir Link</li>
+                            <li class="mb-2">✓ 365 Gün Geçerli</li>
+                            <li class="mb-2">✓ %25 İndirim</li>
+                        </ul>
+                        
+                        {% if current_user %}
+                            <form method="POST" action="{{ url_for('dashboard.choose_plan') }}">
+                                <input type="hidden" name="plan" value="yearly">
+                                <button type="submit" class="btn btn-success w-100">Başla</button>
+                            </form>
+                        {% else %}
+                            <a href="{{ url_for('auth.register') }}" class="btn btn-success w-100">Kaydol</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="alert alert-info">
+            <h5 class="alert-heading">Sorularınız mı var?</h5>
+            <p class="mb-0">Aboneliğinizi istediğiniz zaman iptal edebilirsiniz. Para iadesi garantisi.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

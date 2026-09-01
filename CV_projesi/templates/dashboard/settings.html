@@ -1,0 +1,65 @@
+{% extends "saas_base.html" %}
+
+{% block title %}Ayarlar - Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-4">Ayarlar</h2>
+        
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Profil Bilgileri</h5>
+                
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" value="{{ current_user.email }}" disabled>
+                        <small class="text-muted">Email değiştirilemez.</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">Ad Soyad</label>
+                        <input type="text" class="form-control" id="full_name" name="full_name" 
+                               value="{{ current_user.full_name or '' }}" placeholder="Adınızı ve soyadınızı girin">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label">Mevcut Şifre (Değiştirmek İçin)</label>
+                        <input type="password" class="form-control" id="current_password" name="current_password" 
+                               placeholder="Şifre değiştirmek isterseniz doldurun">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">Yeni Şifre</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password"
+                               placeholder="Yeni şifre">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Yeni Şifre (Tekrar)</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                               placeholder="Yeni şifre tekrar">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <a href="{{ url_for('dashboard.index') }}" class="btn btn-secondary">İptal</a>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3 text-danger">Hesap Sil</h5>
+                <p class="text-muted">Hesabınızı ve tüm verilerinizi silmek istiyorsanız:</p>
+                <button class="btn btn-danger" onclick="if(confirm('Bu işlem geri alınamaz. Emin misiniz?')) { 
+                    fetch('{{ url_for('dashboard.index') }}', {method: 'DELETE'}).then(() => location.href='/auth/login'); 
+                }">Hesabı Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

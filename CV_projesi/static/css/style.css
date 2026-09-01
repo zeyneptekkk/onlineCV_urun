@@ -105,6 +105,39 @@ body {
   color: var(--primary);
 }
 
+/* ─── OnlineCV (SaaS) navbar: dark themed, matches hero/CTA ─── */
+#mainNav.saas-nav {
+  background: var(--primary-dark);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: none;
+  box-shadow: none;
+}
+
+#mainNav.saas-nav .navbar-brand {
+  background: none;
+  -webkit-text-fill-color: white;
+  color: white;
+}
+
+#mainNav.saas-nav .nav-link {
+  color: rgba(255,255,255,.82);
+}
+
+#mainNav.saas-nav .nav-link:hover {
+  color: white;
+  background: rgba(255,255,255,.12);
+}
+
+#mainNav.saas-nav .nav-link.active {
+  color: white;
+  background: rgba(255,255,255,.18);
+}
+
+#mainNav.saas-nav .navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+}
+
 /* ═══════════════════════════════════════════
    HERO
 ═══════════════════════════════════════════ */
@@ -192,6 +225,354 @@ body {
   font-size: 1.1rem;
   color: var(--text-muted);
   font-weight: 400;
+}
+
+/* SaaS public CV pages: no personal backdrop photo, just the theme gradient */
+.hero.hero-saas {
+  background: linear-gradient(160deg, rgba(245,232,236,.98) 0%, var(--bg) 70%, var(--bg) 100%);
+}
+
+.profile-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Profile banner: soft editorial background + signature-style name ─── */
+.profile-banner-wrap {
+  position: relative;
+  margin-bottom: 78px;
+}
+
+.profile-banner {
+  height: 200px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(255,255,255,.55) 0%, transparent 42%),
+    radial-gradient(circle at 88% 80%, rgba(255,255,255,.4) 0%, transparent 48%),
+    linear-gradient(120deg, #f8eef1 0%, #f0dde3 55%, #e6c7d0 100%);
+  box-shadow: var(--shadow);
+}
+
+.profile-banner-name {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 2rem;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  color: var(--primary-dark);
+  line-height: 1.1;
+}
+
+.profile-avatar-row {
+  position: absolute;
+  left: 1.5rem;
+  bottom: -64px;
+  z-index: 2;
+}
+
+.profile-avatar-row .hero-img,
+.profile-avatar-row .hero-img-placeholder {
+  width: 128px;
+  height: 128px;
+  font-size: 2.6rem;
+}
+
+.themed-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ═══════════════════════════════════════════
+   CV SAAS — LANDING HERO
+═══════════════════════════════════════════ */
+.landing-hero {
+  background: var(--primary-dark);
+  padding: 5.5rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+}
+
+.landing-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-bubbles .bubble {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.hero-bubbles .b1 {
+  width: 380px; height: 380px;
+  top: -140px; left: -100px;
+  background: rgba(255,255,255,.05);
+  animation: blobFloat 11s ease-in-out infinite;
+}
+
+.hero-bubbles .b2 {
+  width: 150px; height: 150px;
+  top: 15%; right: 10%;
+  background: rgba(255,255,255,.05);
+  animation: blobFloat 8s ease-in-out infinite reverse;
+}
+
+.hero-bubbles .b3 {
+  width: 90px; height: 90px;
+  bottom: 18%; right: 24%;
+  border: 1.5px solid rgba(255,255,255,.16);
+  animation: blobFloat 13s ease-in-out infinite;
+}
+
+.hero-bubbles .b4 {
+  width: 260px; height: 260px;
+  bottom: -140px; left: 20%;
+  background: rgba(255,255,255,.04);
+  animation: blobFloat 15s ease-in-out infinite reverse;
+}
+
+.hero-bubbles .b5 {
+  width: 54px; height: 54px;
+  top: 32%; left: 9%;
+  border: 1.5px solid rgba(255,255,255,.22);
+  animation: blobFloat 9s ease-in-out infinite;
+}
+
+.hero-bubbles .b6 {
+  width: 130px; height: 130px;
+  top: 55%; right: 5%;
+  background: rgba(255,255,255,.045);
+  animation: blobFloat 10s ease-in-out infinite reverse;
+}
+
+.landing-hero h1 {
+  font-size: 3.25rem;
+  font-weight: 800;
+  letter-spacing: -.7px;
+  color: white;
+  max-width: 840px;
+  margin: 0 auto 1.25rem;
+}
+
+.landing-hero .lead {
+  font-size: 1.3rem;
+  color: rgba(255,255,255,.82);
+  max-width: 680px;
+  margin: 0 auto 2.25rem;
+}
+
+.landing-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.75rem;
+  margin-top: 2.25rem;
+}
+
+.landing-trust-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: rgba(255,255,255,.85);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.landing-feature-cards {
+  margin-top: 2.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.landing-feature-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem 1.75rem;
+  height: 100%;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+}
+
+.landing-feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+
+.landing-feature-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.landing-feature-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+.landing-feature-card p {
+  color: var(--text-muted);
+  font-size: .92rem;
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .landing-hero h1 { font-size: 2.4rem; }
+  .landing-hero { padding: 4rem 0 4rem; clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%); }
+  .landing-feature-cards { margin-top: 2rem; }
+}
+
+/* ─── CV preview mock card ─── */
+.cv-preview-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.cv-preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: .7rem 1rem;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.cv-preview-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--primary);
+  vertical-align: middle;
+  margin-left: 1px;
+  animation: caretBlink 1s step-end infinite;
+}
+
+@keyframes caretBlink {
+  50% { opacity: 0; }
+}
+
+.cv-preview-cursor {
+  position: absolute;
+  top: 8px;
+  left: 20px;
+  font-size: 1.15rem;
+  color: var(--primary-dark);
+  opacity: 0;
+  transform: scale(1) rotate(-15deg);
+  transition: left .7s cubic-bezier(.4,0,.2,1), top .7s cubic-bezier(.4,0,.2,1), opacity .3s, transform .2s;
+  pointer-events: none;
+  z-index: 5;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.2));
+}
+
+.cv-preview-cursor.show { opacity: 1; }
+.cv-preview-cursor.click { transform: scale(.8) rotate(-15deg); }
+
+.cv-preview-scrollarea {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s cubic-bezier(.4,0,.2,1);
+}
+
+.cv-preview-scrollarea.expanded {
+  max-height: 640px;
+  overflow-y: auto;
+}
+
+.cv-preview-bar span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-solid);
+}
+
+.cv-preview-url {
+  margin-left: .75rem;
+  font-size: .78rem;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: .3rem .85rem;
+  border-radius: 999px;
+}
+
+.cv-preview-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+  background: linear-gradient(160deg, rgba(245,232,236,.98) 0%, var(--bg) 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+.cv-preview-label {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: .75rem;
+}
+
+.cv-preview-body {
+  padding: 2rem;
+}
+
+/* ─── FAQ accordion ─── */
+.accordion-item {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm) !important;
+  overflow: hidden;
+  margin-bottom: .75rem;
+}
+
+.accordion-button {
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--text);
+}
+
+.accordion-button:not(.collapsed) {
+  color: var(--primary);
+  background: var(--primary-light);
+  box-shadow: none;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+  border-color: var(--border);
+}
+
+.accordion-body {
+  color: var(--text-muted);
+  font-size: .9rem;
+  line-height: 1.7;
 }
 
 /* ─── Contact Badges ─── */

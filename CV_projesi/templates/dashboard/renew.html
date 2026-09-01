@@ -1,0 +1,51 @@
+{% extends "saas_base.html" %}
+
+{% block title %}Abonelik Yenile - OnlineCV{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">⚠️ Aboneliğiniz Süresi Doldu</h4>
+            <p>CV'lerinizi düzenlemek ve AI özelliklerini kullanmak için aboneliğinizi yenilemeniz gerekiyor.</p>
+            <hr>
+            <p class="mb-0"><strong>Not:</strong> Yayınlı CV'leriniz hala herkese açık olacak, ama düzenleme yapamayacaksınız.</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Monthly Plan -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Aylık Plan</h5>
+                        <p class="h3 text-primary">99 TL</p>
+                        
+                        <form method="POST">
+                            <input type="hidden" name="plan" value="monthly">
+                            <button type="submit" class="btn btn-primary w-100">Yenile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Yearly Plan -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Yıllık Plan</h5>
+                        <p class="h3 text-success">899 TL</p>
+                        
+                        <form method="POST">
+                            <input type="hidden" name="plan" value="yearly">
+                            <button type="submit" class="btn btn-success w-100">Yenile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
